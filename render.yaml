@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: raksha-netra
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --timeout 300 --worker-class gevent
