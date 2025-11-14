@@ -15,3 +15,5 @@ bleach
 Flask-Limiter
 safetensors
 python-dotenv
+gunicorn
+gevent
