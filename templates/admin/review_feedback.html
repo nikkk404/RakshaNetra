@@ -1,0 +1,89 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Review User Feedback{% endblock %}
+
+{% block admin_content %}
+<div class="container-fluid">
+    <h2 class="mt-4 mb-4">Review User Feedback</h2>
+    
+    {# --- NEW: Analytics Metrics Section --- #}
+    {% if feedback_stats %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-2">
+                <div class="card-body">
+                    <h6 class="card-title">Total Submissions</h6>
+                    <p class="card-text fs-3">{{ feedback_stats.total_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-2">
+                <div class="card-body">
+                    <h6 class="card-title">Avg. Overall Rating</h6>
+                    <p class="card-text fs-3">{{ feedback_stats.avg_overall | default('N/A') }} / 5</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-2">
+                <div class="card-body">
+                    <h6 class="card-title">Avg. Prediction Usefulness</h6>
+                    <p class="card-text fs-3">{{ feedback_stats.avg_usefulness | default('N/A') }} / 5</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-2">
+                <div class="card-body">
+                    <h6 class="card-title">Avg. Ease of Use</h6>
+                    <p class="card-text fs-3">{{ feedback_stats.avg_ease_of_use | default('N/A') }} / 5</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {# --- END: Analytics Metrics Section --- #}
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% elif feedback_list %}
+        <p class="text-muted">Total Submissions: {{ feedback_list | length }}</p>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Overall Rating (1-5)</th>
+                        <th>Satisfaction (1-5)</th>
+                        <th>Prediction Usefulness (1-5)</th>
+                        <th>Ease of Use (1-5)</th>
+                        <th>Suggestions</th>
+                        <th>User/Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in feedback_list %}
+                    <tr>
+                        <td>{{ feedback.date_submitted }}</td>
+                        <td><span class="badge bg-primary">{{ feedback.rating_overall }}</span></td>
+                        <td>{{ feedback.rating_satisfaction }}</td> 
+                        <td>{{ feedback.rating_usefulness }}</td>
+                        <td>{{ feedback.rating_ease_of_use }}</td>
+                        <td>{{ feedback.suggestions or 'N/A' }}</td>
+                        <td>
+                            {% if feedback.user_id != 'Anonymous' %}
+                                User ID: {{ feedback.user_id }}<br>
+                            {% endif %}
+                            Email: {{ feedback.contact_email or 'N/A' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No user feedback has been submitted yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

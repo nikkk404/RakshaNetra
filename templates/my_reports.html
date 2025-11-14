@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+{% block title %}My Reports - Cyber RD{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    /* --- EXISTING RATING WIDGET CSS --- */
+    /* Basic container for the widget */
+    .rating-widget {
+        display: inline-block;
+        border: 0;
+        font-size: 2rem; /* Make stars bigger */
+    }
+    /* Hide the default radio buttons */
+    .rating-widget > input {
+        display: none;
+    }
+    /* Style the star labels */
+    .rating-widget > label {
+        float: right; /* Reverses the order, so 5-star is on the left */
+        color: #ddd; /* Default empty star color */
+        padding: 0 0.15em;
+        cursor: pointer;
+    }
+    /* This is the hover/checked magic */
+    .rating-widget > input:checked ~ label,
+    .rating-widget > input:hover ~ label,
+    .rating-widget > label:hover ~ label {
+        color: #f5c518; /* Gold color */
+    }
+    /* Fix for the 5-star hover state */
+    .rating-widget > input:checked + label:hover,
+    .rating-widget > input:checked ~ label:hover,
+    .rating-widget > label:hover ~ input:checked ~ label,
+    .rating-widget > input:checked ~ label:hover ~ label {
+        color: #f5c518;
+    }
+    /* This is for displaying the rating *after* it's been submitted */
+    .star-rating-display {
+        color: #f5c518;
+        font-size: 1.2rem;
+    }
+    .star-rating-display .text-muted {
+        color: #ddd !important;
+    }
+    /* --- END EXISTING RATING WIDGET CSS --- */
+
+    /* --- NEW STATUS TIMELINE CSS --- */
+    .report-timeline {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        padding-top: 20px;
+        margin-bottom: 25px;
+        border-bottom: 1px dashed #eee;
+    }
+    .timeline-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        padding-bottom: 25px;
+        opacity: 0.4;
+    }
+    .timeline-step:last-child {
+        flex: 0;
+        padding-right: 0;
+    }
+    .timeline-icon {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        font-size: 1.5rem;
+        color: #ddd;
+        background-color: white;
+        padding: 0 5px;
+        border-radius: 50%;
+    }
+    /* The continuous line between steps */
+    .report-timeline::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 10%;
+        right: 10%;
+        height: 4px;
+        background: #ddd;
+        z-index: 5;
+    }
+    /* Styles for completed and current steps */
+    .timeline-complete, .timeline-active {
+        opacity: 1;
+        font-weight: bold;
+    }
+    .timeline-complete .timeline-icon, .timeline-active .timeline-icon {
+        color: #004aad; /* Primary Blue */
+    }
+    .timeline-complete .timeline-content h5 {
+        color: #28a745; /* Green */
+    }
+    .timeline-content {
+        min-height: 80px;
+    }
+    /* Line fill for completed stages (more complex to do purely in CSS with flex, but visual cues are enough) */
+</style>
+{% endblock head %}
+
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">My Submitted Reports</h1>
+                <h6 class="text-center">View a summary and status timeline of all incidents you have submitted.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12 mx-auto">
+                <div class="mt-5 p-4 rounded" style="background-color: #f0f8ff;">
+                    <h2 class="text-center mb-4">Your Incident History</h2>
+
+                    {% if error %}
+                    <div class="alert alert-danger mt-3">{{ error }}</div>
+                    {% elif message %}
+                    <div class="alert alert-info mt-3 text-center">{{ message }}</div>
+                    {% elif reports %}
+                    <div class="row row-cols-1 g-4">
+                        {% for report in reports %}
+                        <div class="col">
+                            <div class="card h-100 shadow-lg p-3">
+                                <h5 class="card-title mb-2"><strong>Report ID:</strong> <span class="text-primary">{{ report.report_tracking_id | default('N/A') }}</span></h5>
+                                <p class="card-text mb-1"><strong>Status:</strong> <span class="status-{{ report.status | lower | replace(' ', '-') }}">{{ report.status | default('N/A') | capitalize }}</span></p>
+                                
+                                <hr class="my-3">
+                                
+                                {# --------------------------- START: STATUS TIMELINE --------------------------- #}
+                                <h6 class="mb-3">Progress Tracker:</h6>
+                                
+                                <div class="report-timeline">
+                            {% set stages = ['Received', 'In Progress', 'Halted', 'Pending Admin Review', 'Resolved'] %}
+                                    {% for stage in stages %}
+                                        {# Logic to check if this stage was EVER reached (requires status_history to be implemented in app.py) #}
+                                        {% set is_complete = report.status_history | selectattr('stage', '==', stage) | list | length > 0 %}
+                                        {% set is_current = report.status == stage %}
+                                        
+                                        {# Find the latest history item for display notes #}
+                                        {% set history_item = (report.status_history | selectattr('stage', '==', stage) | list | last) %}
+                                        
+                                        <div class="timeline-step {% if is_complete %}timeline-complete{% elif is_current %}timeline-active{% endif %}" style="width: {{ 100 / stages|length }}%">
+                                            <div class="timeline-icon">
+                                                <i class="fas {% if is_complete %}fa-check-circle{% else %}fa-circle{% endif %}"></i>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <h5 class="small mt-2">{{ stage | replace('Pending Admin Review', 'Admin Review') }}</h5>
+                                                {% if history_item %}
+                                                    {# FIX APPLIED: Using slicing [:10] instead of the unavailable | split filter #}
+                                                    <p class="text-muted small mb-0">{{ (history_item.date | default(''))[:10] }}</p>
+                                                    <p class="small fst-italic mb-0">{{ history_item.notes | default('Update logged.') }}</p>
+                                                {% endif %}
+                                                {% if is_current and not is_complete %}
+                                                     <p class="badge bg-warning text-dark mt-1">CURRENT</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {# --------------------------- END: STATUS TIMELINE --------------------------- #}
+                                
+                                <h6 class="mb-2">Case Details:</h6>
+                                <p class="card-text mb-1"><strong>Predicted Category:</strong> {{ report.predicted_category | default('N/A') }}</p>
+                                <p class="card-text mb-1"><strong>Predicted Urgency:</strong> {% set urgency = report.predicted_urgency | default('N/A') %}<span class="urgency-{{ urgency | lower }}">{{ urgency }}</span></p>
+                                <p class="card-text mb-2"><strong>Description:</strong> {{ report.description | default('N/A') | truncate(100, True, '...') }}</p>
+                                
+                                <hr class="my-2">
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <strong>Initial Evidence:</strong>
+                                        {% if report.evidence_file and report.evidence_file != "N/A" %}
+                                            <a href="{{ url_for('uploaded_file', filename=report.evidence_file) }}" 
+                                            target="_blank" class="btn btn-sm btn-info ms-2">
+                                            <i class="fas fa-file-alt me-1"></i> View
+                                            </a>
+
+                                        {% else %}
+                                            <span class="text-muted small">No file uploaded.</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ms-3">
+                                        <strong>Final Report:</strong>
+                                        {% if report.final_report_file and report.final_report_file != "N/A" %}
+                                            
+                                        <a href="{{ url_for('uploaded_file', filename=report.final_report_file) }}" 
+                                        target="_blank" class="btn btn-sm btn-success ms-2">
+                                        <i class="fas fa-download me-1"></i> Download Report
+                                        </a>
+
+
+
+                                        {% else %}
+                                            <span class="text-muted small">Not yet available</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                
+
+                                {% if report.status in ["Resolved", "Closed"] %}
+                                <hr class="my-3">
+                                <div class="feedback-section" id="feedback-section-{{ report._id_str }}">
+                                    
+                                    {% if report.user_rating %}
+                                    <h5 class="mb-2">Your Feedback</h5>
+                                    <p class="mb-1">Thank you! You rated this case:</p>
+                                    <div class="star-rating-display">
+                                        {% for i in range(1, 6) %}
+                                            {% if i <= report.user_rating %}
+                                                <i class="bi bi-star-fill"></i>
+                                            {% else %}
+                                                <i class="bi bi-star" class="text-muted"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="ms-2">({{ report.user_rating }} / 5 stars)</span>
+                                    </div>
+                                    {% if report.user_feedback_comment %}
+                                        <p class="mt-2 mb-0"><strong>Your comment:</strong></p>
+                                        <p class="text-muted fst-italic">"{{ report.user_feedback_comment }}"</p>
+                                    {% endif %}
+
+                                    {% else %}
+                                    <form id="rating-form-{{ report._id_str }}" class="rating-form">
+                                        <h5 class="mb-2">Rate your experience</h5>
+                                        <p class="small text-muted mb-1">Your feedback helps us improve our service.</p>
+                                        
+                                        <div class="rating-widget mb-2">
+                                            <input type="radio" id="star-{{ report._id_str }}-5" name="rating-{{ report._id_str }}" value="5" /><label for="star-{{ report._id_str }}-5" title="5 stars">&#9733;</label>
+                                            <input type="radio" id="star-{{ report._id_str }}-4" name="rating-{{ report._id_str }}" value="4" /><label for="star-{{ report._id_str }}-4" title="4 stars">&#9733;</label>
+                                            <input type="radio" id="star-{{ report._id_str }}-3" name="rating-{{ report._id_str }}" value="3" /><label for="star-{{ report._id_str }}-3" title="3 stars">&#9733;</label>
+                                            <input type="radio" id="star-{{ report._id_str }}-2" name="rating-{{ report._id_str }}" value="2" /><label for="star-{{ report._id_str }}-2" title="2 stars">&#9733;</label>
+                                            <input type="radio" id="star-{{ report._id_str }}-1" name="rating-{{ report._id_str }}" value="1" /><label for="star-{{ report._id_str }}-1" title="1 star">&#9733;</label>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="comment-{{ report._id_str }}" class="form-label small">Add a comment (optional):</label>
+                                            <textarea class="form-control" id="comment-{{ report._id_str }}" rows="3"></textarea>
+                                        </div>
+
+                                        <button type="button" class="btn btn-primary btn-sm btn-submit-rating" data-report-id="{{ report._id_str }}">Submit Feedback</button>
+                                        
+                                        <div id="rating-message-{{ report._id_str }}" class="mt-2"></div>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Helper function to generate star icons
+    function getStarDisplay(rating) {
+        let stars = '';
+        rating = parseInt(rating); // Ensure it's a number
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += '<i class="bi bi-star-fill"></i>';
+            } else {
+                // Use style for the empty star color
+                stars += '<i class="bi bi-star" style="color: #ddd;"></i>'; 
+            }
+        }
+        return stars;
+    }
+
+    // Handle click on any submit rating button
+    $('.btn-submit-rating').on('click', function(e) {
+        e.preventDefault();
+        
+        var reportId = $(this).data('report-id');
+        var $form = $('#rating-form-' + reportId);
+        var $messageEl = $('#rating-message-' + reportId);
+        $messageEl.html(''); // Clear previous messages
+
+        // 1. Get rating value
+        var rating = $('input[name="rating-' + reportId + '"]:checked').val();
+        if (!rating) {
+            $messageEl.html('<div class="alert alert-danger p-2 small">Please select a star rating.</div>');
+            return;
+        }
+
+        // 2. Get comment
+        var comment = $('#comment-' + reportId).val().trim();
+
+        // 3. Send to API
+        $.ajax({
+            url: '/api/submit_rating/' + reportId,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                rating: parseInt(rating),
+                comment: comment
+            }),
+            success: function(data) {
+                if (data.success) {
+                    // On success, replace the form with the "Thank you" message
+                    var $feedbackSection = $('#feedback-section-' + reportId);
+                    var starHtml = getStarDisplay(rating);
+                    var commentHtml = comment ? `<p class="mt-2 mb-0"><strong>Your comment:</strong></p><p class="text-muted fst-italic">"${comment}"</p>` : '';
+
+                    $feedbackSection.html(`
+                        <h5 class="mb-2">Your Feedback</h5>
+                        <p class="text-success">${data.message || 'Thank you for your feedback!'}</p>
+                        <div class="star-rating-display">
+                            ${starHtml}
+                            <span class="ms-2">(${rating} / 5 stars)</span>
+                        </div>
+                        ${commentHtml}
+                    `);
+                } else {
+                    // Show error from API (e.g., "already rated")
+                    $messageEl.html('<div class="alert alert-danger p-2 small">' + (data.error || 'Failed to submit rating.') + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle server/network errors
+                console.error('Error:', error);
+                var errorMsg = 'An unexpected error occurred.';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMsg = xhr.responseJSON.error;
+                }
+                $messageEl.html('<div class="alert alert-danger p-2 small">' + errorMsg + '</div>');
+            }
+        });
+    });
+});
+</script>
+{{ super() }}
+{% endblock %}

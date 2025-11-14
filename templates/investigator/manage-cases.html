@@ -1,0 +1,175 @@
+{% extends 'investigator/investigator_base.html' %}
+{% block investigator_title %}Manage Assigned Cases{% endblock %}
+
+{% block investigator_content %}
+<section id="manage-cases" class="dashboard-section active">
+    <h2>My Assigned Cases</h2>
+    <div class="cases-table-container">
+        <table class="cases-table">
+            <thead>
+                <tr>
+                    <th>Case ID</th>
+                    <th>CATEGORY</th>
+                    <th>URGENCY</th>
+                    <th>STATUS</th>
+                    <th>EVIDENCE</th>
+                    <th style="width: 25%;">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if cases %}
+                    {% for case in cases %}
+                    <tr data-case-id="{{ case._id_str }}">
+                        <td>{{ case.report_tracking_id | default('N/A') }}</td>
+                        <td>{{ case.predicted_category | default('N/A') }}</td>
+                        <td>
+                            <span class="urgency-{{ case.predicted_urgency | lower }}">{{ case.predicted_urgency | default('N/A') }}</span>
+                        </td>
+                        <td class="status-cell">
+                            <span class="status-{{ case.status | lower | replace(' ', '-') }}">{{ case.status | default('N/A') }}</span>
+                        </td>
+                        <td>
+
+
+                            {% if case.evidence_file and case.evidence_file != "N/A" %}
+                            {# FINAL FIX: Use the custom file-serving route 'uploaded_file' #}
+                            <a href="{{ url_for('uploaded_file', filename=case.evidence_file) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                {% else %}
+                                    <span class="text-muted">No File</span>
+                                {% endif %}
+
+
+                        </td>
+                        <td>
+                            <div class="action-group d-flex flex-column align-items-start">
+                                
+                                <button 
+                                    class="btn btn-sm btn-info view-case-btn mb-1"
+                                    data-report-id="{{ case.report_tracking_id | default('') }}"
+                                    data-db-id="{{ case._id_str | default('') }}">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                
+                                {% if case.status in ['Received', 'In Progress'] %}
+                                    
+                                    {% if case.admin_rejection_reason %}
+                                        <div class="alert alert-danger p-1 small mb-1 mt-1" role="alert">
+                                            <strong>Report Rejected:</strong> {{ case.admin_rejection_reason }}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex w-100 mt-1">
+                                        <select class="form-select form-select-sm status-select me-1" data-case-id="{{ case._id_str }}" style="max-width: 130px;">
+                                            <option value="">-- Actions --</option>
+                                            {# If status is Received, Investigator can move to In Progress #}
+                                            {% if case.status == 'Received' %}<option value="In Progress">Start Investigation</option>{% endif %}
+                                            <option value="Halted">Hold/Halt Case</option>
+                                            {% if case.status == 'Halted' %}<option value="In Progress">Resume Case</option>{% endif %}
+                                        </select>
+                                        
+                                        <button class="btn btn-sm btn-warning update-status-btn">Update</button>
+                                    </div>
+                                    
+                                    <button class="btn btn-sm btn-success open-report-modal-btn mt-2">Final Report</button>
+
+                                {% elif case.status == 'Pending Admin Review' %}
+
+                                    <span class="badge bg-secondary mb-1">Awaiting Admin Approval</span>
+                                    
+                                    {% if case.investigator_report_file %}
+                                    <a href="{{ url_for('static', filename=case.investigator_report_file) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-file-alt"></i> View Pending
+                                    </a>
+                                    {% endif %}
+
+                                {% elif case.status == 'Halted' %}
+                                    <span class="badge bg-danger mb-1">Investigation On Hold</span>
+                                    <button class="btn btn-sm btn-warning resume-btn" data-case-id="{{ case._id_str }}">Resume</button>
+                                    
+                                {% else %} 
+                                    <span class="badge bg-success">Case Finalized</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">You have no cases assigned.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        
+        {# MODAL DEFINITIONS: Keep these blocks intact below the table #}
+        <div id="case-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" style="float:right;cursor:pointer;">&times;</span>
+                <h2>Case Details - <span id="modal-report-id-header"></span></h2>
+                {# ... (Modal content follows, using original IDs) ... #}
+                <p><strong>Tracking ID:</strong> <span id="modal-tracking-id-display"></span></p>
+                <p><strong>Database ID:</strong> <span id="modal-db-id-display"></span></p>
+                <p><strong>Report Type:</strong> <span id="modal-report-type"></span></p>
+                <p><strong>Name:</strong> <span id="modal-reporter-name"></span></p>
+                <p><strong>Email:</strong> <span id="modal-reporter-email"></span></p>
+                <p><strong>Mobile:</strong> <span id="modal-reporter-mobile"></span></p>
+                <p><strong>Gender:</strong> <span id="modal-reporter-gender"></span></p>
+                <p><strong>Age:</strong> <span id="modal-reporter-age"></span></p>
+                <p><strong>Status:</strong> <span id="modal-case-status"></span></p>
+                <p><strong>Category:</strong> <span id="modal-predicted-category"></span></p>
+                <p><strong>Urgency:</strong> <span id="modal-predicted-urgency"></span></p>
+                <p><strong>State:</strong> <span id="modal-state"></span></p>
+                <p><strong>Location:</strong> <span id="modal-location"></span></p>
+                <p><strong>Date of Incident:</strong> <span id="modal-date-of-incident"></span></p>
+                <p><strong>Date Submitted:</strong> <span id="modal-date-submitted"></span></p>
+                <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+                <p><strong>Evidence:</strong> <span id="inv-modal-evidence-link"></span></p>
+                <p><strong>Final Report:</strong> <span id="inv-modal-final-report-link"></span></p>
+
+            </div>
+        </div>
+
+        {# INVESTIGATOR HALT MODAL #}
+        <div id="investigator-halt-modal" class="modal" style="display:none;">
+            <div class="modal-content p-3">
+                <span class="close-halt-modal" style="float:right;cursor:pointer">&times;</span>
+                <h4>Halt Case - Provide Details</h4>
+                <input type="hidden" id="haltCaseId" value="">
+                <div class="mb-2">
+                    <label for="inv_halt_message">Reason (why halted - PUBLIC NOTE)</label>
+                    <textarea id="inv_halt_message" class="form-control" rows="2" placeholder="e.g., Awaiting response from victim for bank logs. This is visible to the user."></textarea>
+                </div>
+                <div class="mb-2">
+                    <label for="inv_halt_instructions">Next Steps / Internal Notes (PRIVATE)</label>
+                    <textarea id="inv_halt_instructions" class="form-control" rows="3" placeholder="e.g., Notify Admin after 7 days if no response."></textarea>
+                </div>
+                <div>
+                    <button id="invSubmitHalt" class="btn btn-primary">Send Halt Update</button>
+                </div>
+            </div>
+        </div>
+        
+        {# UPLOAD FINAL REPORT MODAL #}
+        <div id="uploadReportModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Upload Final Report</h2>
+                <form id="uploadReportForm">
+                    <input type="hidden" id="modalCaseId" name="case_id">
+                    <div class="form-group">
+                        <label for="final_report_file">Select Report File:</label>
+                        <input type="file" id="final_report_file" name="final_report_file" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Upload</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+{% endblock %}
+
+{% block custom_scripts %}
+    <script src="{{ url_for('static', filename='investigator/investigator_script.js') }}"></script>
+{% endblock %}

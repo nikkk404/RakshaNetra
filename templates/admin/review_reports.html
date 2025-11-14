@@ -1,0 +1,201 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Review Submitted Reports{% endblock %}
+
+{% block admin_content %}
+<section id="review-reports" class="dashboard-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Review Pending Reports</h2>
+    </div>
+
+    <div class="cases-table-container table-responsive" style="overflow-x: auto;">
+        <table class="cases-table">
+            <thead>
+                <tr>
+                    <th>Case ID</th>
+                    <th>Investigator</th>
+                    <th>Category</th>
+                    <th>Urgency</th>
+                    <th>Submitted On</th>
+                    <th>Report to Review</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="review-table-body">
+                {% if reports and reports|length > 0 %}
+                    {% for report in reports %}
+                    <tr id="row-{{ report._id_str }}">
+                        <td>{{ report.report_tracking_id | default('N/A') }}</td>
+                        <td>{{ report.investigator_name | default('Unknown') }}</td>
+                        <td>{{ report.predicted_category | default('N/A') }}</td>
+                        <td>
+                            {% set urgency = report.predicted_urgency | default('N/A') %}
+                            <span class="urgency-{{ urgency | lower }}">
+                                {{ urgency }}
+                            </span>
+                        </td>
+                        <td>{{ report.investigator_report_date | default('N/A') }}</td>
+                        <td>
+                            {# FIX 1: Use the working custom route for View Report #}
+                            {% if report.investigator_report_file %}
+                            <a href="{{ url_for('uploaded_file', filename=report.investigator_report_file) }}" 
+                                target="_blank" class="btn btn-sm btn-primary">
+                                <i class="fas fa-file-alt"></i> View Report
+                            </a>
+                            {% else %}
+                                <span class="text-danger">No File Found</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {# FIX 2: Details button logic uses view-case-btn for JS delegation #}
+                            <button class="btn btn-sm btn-info view-case-btn" data-db-id="{{ report._id_str }}">
+                            <i class="fas fa-eye"></i> Details
+                            </button>
+                            
+                            <button class="btn btn-sm btn-success approve-report-btn" data-case-id="{{ report._id_str }}">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            
+                            <button class="btn btn-sm btn-danger reject-report-btn" data-case-id="{{ report._id_str }}">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">No reports are pending review.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    {# --- CASE DETAILS MODAL (Requires JS population) --- #}
+    <div id="case-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Case Details - <span id="modal-report-id-header"></span></h2>
+            <p><strong>Tracking ID:</strong> <span id="modal-tracking-id-display"></span></p>
+            <p><strong>Database ID:</strong> <span id="modal-db-id-display"></span></p>
+            <p><strong>Report Type:</strong> <span id="modal-report-type"></span></p>
+            <p><strong>Name:</strong> <span id="modal-reporter-name"></span></p>
+            <p><strong>Email:</strong> <span id="modal-reporter-email"></span></p>
+            <p><strong>Mobile:</strong> <span id="modal-reporter-mobile"></span></p>
+            <p><strong>Gender:</strong> <span id="modal-reporter-gender"></span></p>
+            <p><strong>Age:</strong> <span id="modal-reporter-age"></span></p>
+            <p><strong>Status:</strong> <span id="modal-case-status"></span></p>
+            <p><strong>Category:</strong> <span id="modal-predicted-category"></span></p>
+            <p><strong>Urgency:</strong> <span id="modal-predicted-urgency"></span></p>
+            <p><strong>State:</strong> <span id="modal-state"></span></p>
+            <p><strong>Location:</strong> <span id="modal-location"></span></p>
+            <p><strong>Date of Incident:</strong> <span id="modal-date-of-incident"></span></p>
+            <p><strong>Date Submitted:</strong> <span id="modal-date-submitted"></span></p>
+            <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+            <p><strong>Evidence:</strong> <span id="modal-evidence-link"></span></p>
+            <p><strong>Final Report:</strong> <span id="modal-final-report-link"></span></p>
+        </div>
+    </div>
+    
+    {# NOTE: Your rejection reason modal should be defined here if used separately #}
+    
+</section>
+{% endblock admin_content %}
+
+
+{% block admin_script_extra %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+// NOTE: This relies on populateCaseDetailsModal being defined externally (in admin_script.js).
+
+// =================================================================
+// === FIX 1 & 2: MODAL CLOSE AND DETAILS BUTTON HANDLERS ============
+// =================================================================
+
+$(document).ready(function() {
+    const caseDetailsModal = document.getElementById('case-details-modal');
+
+    // --- Close Button and Outside Click Listener ---
+    const closeButton = caseDetailsModal ? caseDetailsModal.querySelector('.close-button') : null;
+
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            if (caseDetailsModal) caseDetailsModal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (event) => {
+        if (event.target === caseDetailsModal) {
+            caseDetailsModal.style.display = 'none';
+        }
+    });
+    // ----------------------------------------------------
+
+
+    // --- Details Button Handler (FIX: Calls external data loader) ---
+    $('#review-table-body').on('click', '.view-case-btn', async function() {
+        const mongoDbId = $(this).data('db-id');
+        
+        if (mongoDbId) {
+            // CRITICAL: This assumes populateCaseDetailsModal is available globally (from admin_script.js)
+            if (typeof populateCaseDetailsModal === 'function') {
+                await populateCaseDetailsModal(mongoDbId);
+            } else {
+                alert('Error: Data loading function (populateCaseDetailsModal) is missing.');
+            }
+        } else {
+            alert('Error: Case ID not found for details view.');
+        }
+    });
+
+
+    // --- Approve Report Button (Existing Logic) ---
+    $('#review-table-body').on('click', '.approve-report-btn', async function() {
+        const caseId = $(this).data('case-id');
+        if (!confirm('Are you sure you want to approve this report and resolve the case?')) { return; }
+
+        try {
+            const response = await fetch('/api/admin/approve_report/' + caseId, { method: 'POST' });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Report approved and case set to Resolved.');
+                $('#row-' + caseId).remove();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (err) {
+            alert('An unknown error occurred during approval.');
+        }
+    });
+
+    // --- Reject Report Button (Existing Logic) ---
+    $('#review-table-body').on('click', '.reject-report-btn', async function() {
+        const caseId = $(this).data('case-id');
+        const reason = prompt('Please provide a reason for rejecting this report (this will be sent to the investigator):');
+        
+        if (!reason || reason.trim() === '') {
+            alert('Rejection cancelled. A reason is required.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/admin/reject_report/' + caseId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reason: reason })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Report rejected and investigator notified.');
+                $('#row-' + caseId).remove();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (err) {
+            alert('An unknown error occurred during rejection.');
+        }
+    });
+});
+</script>
+{% endblock admin_script_extra %}

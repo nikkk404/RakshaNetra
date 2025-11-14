@@ -1,0 +1,17 @@
+Flask
+transformers
+torch
+pymongo
+numpy
+scikit-learn
+pandas
+WeasyPrint
+fpdf2
+email_validator
+Flask-Login
+Flask-WTF
+geopy
+bleach
+Flask-Limiter
+safetensors
+python-dotenv

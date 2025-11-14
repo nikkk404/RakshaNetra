@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block admin_title %}Admin Dashboard{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/admin_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {% block admin_head_extra %}{% endblock %}
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+    <ul>
+        <li>
+            <a href="{{ url_for('admin_overview') }}" class="sidebar-nav-link {% if request.endpoint == 'admin_overview' %}active{% endif %}">
+                <i class="fas fa-tachometer-alt"></i> Overview
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('admin_manage_cases') }}" class="sidebar-nav-link {% if request.endpoint == 'admin_manage_cases' %}active{% endif %}">
+                <i class="fas fa-folder-open"></i> Manage Cases
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('admin_review_reports') }}" class="sidebar-nav-link {% if request.endpoint == 'admin_review_reports' %}active{% endif %}">
+                <i class="fas fa-check-double"></i> Review Reports
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ url_for('admin_review_feedback') }}" class="sidebar-nav-link {% if request.endpoint == 'admin_review_feedback' %}active{% endif %}">
+                <i class="fas fa-comment-dots"></i> Review Feedback
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('admin_analytics') }}" class="sidebar-nav-link {% if request.endpoint == 'admin_analytics' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Analytics
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('admin_investigators') }}" 
+                class="sidebar-nav-link {% if request.endpoint == 'admin_investigators' %}active{% endif %}">
+                <i class="fas fa-user-shield"></i> Investigators
+            </a>
+        </li>
+
+        <li class="sidebar-nav-separator"></li>
+        <li>
+            <a href="{{ url_for('index') }}" class="sidebar-nav-link {% if request.endpoint == 'index' %}active{% endif %}">
+                <i class="fas fa-globe"></i> Go to Public Site
+            </a>
+        </li>
+        <li class="sidebar-nav-separator"></li>
+        <li>
+            <a href="{{ url_for('logout') }}" class="sidebar-nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </li>
+    </ul>
+</nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h1>Welcome, {{ current_user.username | default('Admin') }}!</h1>
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40" alt="Admin Avatar">
+                    <span>{{ current_user.username | default('Admin User') }}</span>
+                </div>
+            </header>
+
+            <div id="content-area">
+                {% block admin_content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='admin/admin_script.js') }}"></script>
+    
+    <script>
+        document.querySelector('.mobile-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+    </script>
+    
+    {% block admin_script_extra %}{% endblock %}
+</body>
+</html>

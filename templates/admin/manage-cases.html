@@ -1,0 +1,364 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Manage Cases - Admin Panel{% endblock %}
+
+{% block admin_content %}
+<section id="manage-cases" class="dashboard-section">
+    <h2>Manage Cases</h2>
+
+    <form method="GET" action="{{ url_for('admin_manage_cases') }}" class="filters">
+        <input 
+            type="text" 
+            name="search" 
+            id="case-search" 
+            placeholder="Search ID, description, category..." 
+            value="{{ search_query or '' }}">
+        
+        <select name="status" id="case-status-filter">
+            <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All Statuses</option>
+            <option value="Received" {% if selected_status == 'Received' %}selected{% endif %}>Received</option>
+            <option value="In Progress" {% if selected_status == 'In Progress' %}selected{% endif %}>In Progress</option>
+            <option value="Pending Admin Review" {% if selected_status == 'Pending Admin Review' %}selected{% endif %}>Pending Review</option>
+            <option value="Resolved" {% if selected_status == 'Resolved' %}selected{% endif %}>Resolved</option>
+            <option value="Halted" {% if selected_status == 'Halted' %}selected{% endif %}>Halted</option>
+        </select>
+        
+        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Apply Filter</button>
+    </form>
+    
+    <div class="cases-table-container table-responsive" style="overflow-x: auto;">
+        <table class="cases-table">
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Predicted Category</th>
+                    <th>Predicted Urgency</th>
+                    <th>Date Submitted</th>
+                    <th>Evidence</th>
+                    <th>Investigator</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="cases-table-body">
+                {% if complaints %}
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.report_tracking_id | default('N/A') }}</td>
+                        <td>{{ complaint.description | default('No description') | truncate(50, True, '...') }}</td>
+                        <td>
+                            <span class="status-{{ complaint.status | lower | replace(' ', '-') }}">
+                                {{ complaint.status | default('N/A') | capitalize }}
+                            </span>
+                        </td>
+                        <td>{{ complaint.predicted_category | default('N/A') }}</td>
+                        <td>
+                            {% set urgency = complaint.predicted_urgency | default('N/A') %}
+                            <span class="urgency-{{ urgency | lower }}">
+                                {{ urgency }}
+                            </span>
+                        </td>
+                        <td>{{ complaint.date_submitted | default('N/A') }}</td>
+                        <td>
+                            {% if complaint.evidence_file and complaint.evidence_file != "N/A" %}
+                            <a href="{{ url_for('uploaded_file', filename=complaint.evidence_file) }}" target="_blank" class="btn btn-sm btn-info">View Evidence</a>
+                                {% else %}
+                                    <span class="text-muted">No File</span>
+                                {% endif %}
+                            
+              
+                                {% if complaint.status == 'Pending Admin Review' and complaint.investigator_report_file %}
+                                <a href="{{ url_for('uploaded_file', filename=complaint.investigator_report_file) }}" target="_blank" class="btn btn-sm btn-warning mt-1" style="font-size: 0.75rem;">
+                                <i class="fas fa-file-alt"></i> View Pending Report
+                                </a>
+                              {% endif %}
+
+                            {% if complaint.status in ['Resolved', 'Closed'] and complaint.final_report_file %}
+                                <a href="{{ url_for('uploaded_file', filename=complaint.final_report_file) }}" target="_blank" class="btn btn-sm btn-success mt-1" style="font-size: 0.75rem;">
+                                <i class="fas fa-check-circle"></i> View Final Report
+                                </a>
+                             {% endif %}
+
+
+
+
+
+                        </td>
+                        <td>
+                            {% if complaint.assigned_investigator %}
+                                Assigned to: <strong>{{ complaint.investigator_name | default('Unknown') }}</strong><br>
+                                <button class="btn btn-sm btn-danger revoke-btn" data-case-id="{{ complaint._id_str }}">Revoke</button>
+                            {% else %}
+                                <select class="form-select form-select-sm investigator-select searchable-select" data-case-id="{{ complaint._id_str }}">
+                                    <option value="">Select Investigator</option>
+                                            {% for inv in investigators %}
+                                            {# CORRECTED: Display username and the unique, short user_id #}
+                                                <option value="{{ inv._id_str }}">{{ inv.username }} (ID: {{ inv.user_id | default('N/A') }})</option>
+                                            {% endfor %}
+                                </select>
+                                <button class="btn btn-sm btn-primary assign-btn" data-case-id="{{ complaint._id_str }}">Assign</button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info view-case-btn" data-db-id="{{ complaint._id_str }}"><i class="fas fa-eye"></i> View</button>
+                            <button class="btn btn-sm btn-warning update-case-btn" data-db-id="{{ complaint._id_str }}"><i class="fas fa-edit"></i> Update</button>
+                            <button class="btn btn-sm btn-success mark-resolved-btn" data-db-id="{{ complaint._id_str }}"><i class="fas fa-check"></i> Resolve</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">No reports found matching your criteria.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="case-details-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" style="float:right;cursor:pointer">&times;</span>
+            <h2>Case Details - <span id="modal-report-id-header"></span></h2>
+            
+            <p><strong>Tracking ID:</strong> <span id="modal-tracking-id-display"></span></p>
+            <p><strong>Database ID:</strong> <span id="modal-db-id-display"></span></p>
+            <p><strong>Report Type:</strong> <span id="modal-report-type"></span></p>
+            <p><strong>Name:</strong> <span id="modal-reporter-name"></span></p>
+            <p><strong>Email:</strong> <span id="modal-reporter-email"></span></p>
+            <p><strong>Mobile:</strong> <span id="modal-reporter-mobile"></span></p>
+            <p><strong>Gender:</strong> <span id="modal-reporter-gender"></span></p>
+            <p><strong>Age:</strong> <span id="modal-reporter-age"></span></p>
+            <p><strong>Status:</strong> <span id="modal-case-status"></span></p>
+            <p><strong>Category:</strong> <span id="modal-predicted-category"></span></p>
+            <p><strong>Urgency:</strong> <span id="modal-predicted-urgency"></span></p>
+            <p><strong>State:</strong> <span id="modal-state"></span></p>
+            <p><strong>Location:</strong> <span id="modal-location"></span></p>
+            <p><strong>Date of Incident:</strong> <span id="modal-date-of-incident"></span></p>
+            <p><strong>Date Submitted:</strong> <span id="modal-date-submitted"></span></p>
+            <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+            <p><strong>Evidence:</strong> <span id="modal-evidence-link"></span></p>
+            <p><strong>Final Report:</strong> <span id="modal-final-report-link"></span></p>
+        </div>
+    </div>
+    <div id="status-modal" class="modal" style="display:none;">
+        <div class="modal-content p-3">
+            <span class="close-status-modal" style="float:right;cursor:pointer">&times;</span>
+            <h4>Update Case Status</h4>
+            <form id="statusUpdateForm">
+                <input type="hidden" id="statusCaseId" name="case_id" value="">
+                <div class="mb-2">
+                    <label for="new_status">Status</label>
+                    <select id="new_status" name="status" class="form-select" required>
+                        <option value="">-- Select Status --</option>
+                        <option value="Received">Received</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending Admin Review">Pending Admin Review</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Halted">Halted</option>
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label for="public_note">Public Note for User (Appears in status bar)</label>
+                    <textarea id="public_note" name="public_note" class="form-control" rows="2" placeholder="e.g., We expect resolution within 48 hours."></textarea>
+                </div>
+                <div id="halt-fields" style="display:none;">
+                    <div class="mb-2">
+                        <label for="halt_message">Reason (why halted - INTERNAL)</label>
+                        <textarea id="halt_message" name="halt_message" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label for="halt_instructions">Next Steps / What needs to be done (INTERNAL)</label>
+                        <textarea id="halt_instructions" name="halt_instructions" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </section>
+{% endblock admin_content %}
+
+{% block admin_script_extra %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+// =================================================================
+// === JAVASCRIPT FOR ADMIN MANAGE CASES PAGE ======================
+// =================================================================
+
+// Helper function to capitalize strings
+function capitalize(str) {
+    if (typeof str !== 'string' || str.length === 0) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Function to populate the details modal (FIX for blank modal)
+async function populateCaseDetailsModal(mongoDbId) {
+    const modal = document.getElementById('case-details-modal');
+
+    // 1. Set loading state immediately
+    if (modal) modal.style.display = 'block';
+    
+    // Clear dynamic content before loading new data
+    const fieldIds = [
+        'modal-tracking-id-display', 'modal-db-id-display', 'modal-report-type', 'modal-reporter-name', 
+        'modal-reporter-email', 'modal-reporter-mobile', 'modal-reporter-gender', 'modal-reporter-age', 
+        'modal-case-status', 'modal-predicted-category', 'modal-predicted-urgency', 'modal-state', 
+        'modal-location', 'modal-date-of-incident', 'modal-date-submitted', 'modal-case-description'
+    ];
+    fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = 'Loading...';
+    });
+    document.getElementById('modal-evidence-link').innerHTML = 'Loading...';
+    document.getElementById('modal-final-report-link').innerHTML = 'Loading...';
+
+    try {
+        // 2. Fetch data
+        const response = await fetch(`/api/admin/get_report_details/${mongoDbId}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            // 3. Populate fields with actual data
+            document.getElementById('modal-tracking-id-display').textContent = data.report_tracking_id || 'N/A';
+            document.getElementById('modal-db-id-display').textContent = data._id || 'N/A';
+            document.getElementById('modal-report-type').textContent = data.registration_type || 'N/A';
+            document.getElementById('modal-reporter-name').textContent = data.name || 'N/A';
+            document.getElementById('modal-reporter-email').textContent = data.email || 'N/A';
+            document.getElementById('modal-reporter-mobile').textContent = data.mobile || 'N/A';
+            document.getElementById('modal-reporter-gender').textContent = data.gender || 'N/A';
+            document.getElementById('modal-reporter-age').textContent = data.age || 'N/A';
+            document.getElementById('modal-case-status').textContent = data.status || 'N/A';
+            document.getElementById('modal-predicted-category').textContent = data.predicted_category || 'N/A';
+            document.getElementById('modal-predicted-urgency').textContent = data.predicted_urgency || 'N/A';
+            document.getElementById('modal-date-submitted').textContent = data.date_submitted || 'N/A';
+            document.getElementById('modal-case-description').textContent = data.description || 'N/A';
+            document.getElementById('modal-state').textContent = data.state || 'N/A';
+            document.getElementById('modal-location').textContent = data.location || 'N/A';
+            document.getElementById('modal-date-of-incident').textContent = data.date_of_incident || 'N/A';
+
+
+            // Evidence Link
+            const evidencePath = data.evidence_file;
+            const evidenceLinkEl = document.getElementById('modal-evidence-link');
+            if (evidencePath && evidencePath !== 'N/A') {
+                evidenceLinkEl.innerHTML = `<a href="/uploads/${evidencePath}" target="_blank" class="btn btn-sm btn-info">View Evidence</a>`;
+            } else {
+                evidenceLinkEl.textContent = 'No File Uploaded';
+            }
+
+            // Final Report Link
+            const finalReportPath = data.final_report_file;
+            const finalReportLinkEl = document.getElementById('modal-final-report-link');
+            if (finalReportPath && finalReportPath !== 'N/A') {
+                finalReportLinkEl.innerHTML = `<a href="/uploads/${finalReportPath}" target="_blank" class="btn btn-sm btn-success">Download Report</a>`;
+            } else {
+                finalReportLinkEl.textContent = 'Not Available';
+            }
+
+        } else {
+            alert(`Error fetching details: ${data.error || response.statusText}`);
+            if (modal) modal.style.display = 'none';
+        }
+    } catch (error) {
+        console.error("Fetch failed:", error);
+        alert("A network error occurred while loading details.");
+        if (modal) modal.style.display = 'none';
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const caseDetailsModal = document.getElementById('case-details-modal');
+    const casesTableBody = document.getElementById('cases-table-body');
+    const statusModal = document.getElementById('status-modal');
+    
+    // Select2 Initialization for Assign Select Dropdown
+    $('.searchable-select').select2({
+        theme: "bootstrap", 
+        width: '100%',
+        dropdownParent: $('#cases-table-body') // Prevents dropdown from being cut off
+    });
+    
+    // --- FIX 1: Close Button and Outside Click Listener (For Details Modal) ---
+    const closeButton = caseDetailsModal ? caseDetailsModal.querySelector('.close-button') : null;
+
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            if (caseDetailsModal) caseDetailsModal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (event) => {
+        if (event.target === caseDetailsModal) {
+            caseDetailsModal.style.display = 'none';
+        }
+    });
+    // -------------------------------------------------------------------------
+
+
+    // --- FIX 2: Close Status Modal Listener ---
+    const closeStatusModalBtn = document.querySelector('.close-status-modal');
+    if (closeStatusModalBtn) {
+        closeStatusModalBtn.addEventListener('click', () => {
+            if (statusModal) statusModal.style.display = 'none';
+        });
+    }
+
+    // Handle Halted status visibility toggle
+    const newStatusSelect = document.getElementById('new_status');
+    const haltFields = document.getElementById('halt-fields');
+
+    if (newStatusSelect && haltFields) {
+        newStatusSelect.addEventListener('change', function(){
+            if (this.value === 'Halted') {
+                haltFields.style.display = 'block';
+            } else {
+                haltFields.style.display = 'none';
+            }
+        });
+    }
+    // ------------------------------------------------------------------------
+
+
+    // --- Main Event Delegation for Table Actions ---
+    if (casesTableBody) {
+        casesTableBody.addEventListener('click', async (event) => {
+            const target = event.target.closest('button');
+            if (!target) return;
+
+            const mongoDbId = target.dataset.dbId;
+
+            // 1. View Button (Fixes blank modal)
+            if (target.classList.contains('view-case-btn')) {
+                if (mongoDbId) {
+                    await populateCaseDetailsModal(mongoDbId);
+                } else {
+                    alert('Error: Case ID not found.');
+                }
+            } 
+            
+            // 2. Update Button (Opens Status Modal)
+            else if (target.classList.contains('update-case-btn')) {
+                if (!mongoDbId) return;
+                
+                // Clear state and open modal
+                document.getElementById('statusCaseId').value = mongoDbId;
+                if (newStatusSelect) newStatusSelect.value = ""; 
+                if (document.getElementById('public_note')) document.getElementById('public_note').value = ""; 
+                if (document.getElementById('halt_message')) document.getElementById('halt_message').value = "";
+                if (document.getElementById('halt_instructions')) document.getElementById('halt_instructions').value = "";
+                if (haltFields) haltFields.style.display = 'none';
+                if (statusModal) statusModal.style.display = 'block';
+            }
+            
+            // NOTE: Assignment and Resolve button listeners are assumed to be attached globally elsewhere.
+        });
+    }
+});
+</script>
+{% endblock admin_script_extra %}

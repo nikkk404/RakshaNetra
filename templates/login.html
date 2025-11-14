@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Login - Cyber RD{% endblock %}
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Login to Your Account</h1>
+                <h6 class="text-center">Access the Admin Panel or manage your reports.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-12 mx-auto">
+                <div class="mt-5" style="background-color: #f0f8ff; padding: 20px; border-radius: 10px;">
+                    <h2 class="text-center">User Login</h2>
+
+                    {% if message %}
+                    <div class="alert alert-success mt-3 text-center">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" action="{{ url_for('login') }}">
+                        {{ form.hidden_tag() }} {# CSRF token #}
+                        <div class="mb-3">
+                            {{ form.username.label(class="form-label") }}
+                            {{ form.username(class="form-control rounded-input", placeholder="Enter your username") }}
+                            {% if form.username.errors %}
+                                <ul class="text-danger list-unstyled mt-1">
+                                    {% for error in form.username.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        {# === REMOVED: Email field - only username and password in LoginForm === #}
+                        {#
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control rounded-input", placeholder="Enter your email address") }}
+                            {% if form.email.errors %}
+                                <ul class="text-danger list-unstyled mt-1">
+                                    {% for error in form.email.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        #}
+                        {# === END REMOVED === #}
+
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control rounded-input", placeholder="Enter your password") }}
+                            {% if form.password.errors %}
+                                <ul class="text-danger list-unstyled mt-1">
+                                    {% for error in form.password.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        {# === REMOVED: Confirm Password field - only username and password in LoginForm === #}
+                        {#
+                        <div class="mb-3">
+                            {{ form.confirm_password.label(class="form-label") }}
+                            {{ form.confirm_password(class="form-control rounded-input", placeholder="Confirm your password") }}
+                            {% if form.confirm_password.errors %}
+                                <ul class="text-danger list-unstyled mt-1">
+                                    {% for error in form.confirm_password.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        #}
+                        {# === END REMOVED === #}
+                        
+                        <div class="d-flex justify-content-center">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                        </div>
+                    </form>
+                    <p class="text-center mt-3">
+                        Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

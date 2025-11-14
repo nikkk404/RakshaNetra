@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Retrieve ID - Cyber RD{% endblock %}
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Track Your Incident Report</h1>
+                <h6 class="text-center">Enter your Report ID or contact details to view report status.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <div class="mt-5" style="background-color: #f0f8ff; padding: 20px; border-radius: 10px;">
+                    <h2 class="text-center mb-4">Lookup Report Status</h2>
+                    <form method="post" class="lookup-form" action="{{ url_for('retrieve_id') }}">
+                        <div class="mb-3">
+                            <label for="report_tracking_id" class="form-label">Report Tracking ID</label>
+                            <input type="text" class="form-control rounded-input" id="report_tracking_id" name="report_tracking_id" placeholder="Enter your Report Tracking ID">
+                        </div>
+                        <p class="text-center my-3"><strong class="text-muted">OR</strong></p>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Registered Email</label>
+                            <input type="email" class="form-control rounded-input" id="email" name="email" placeholder="Enter your registered email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Registered Mobile Number</label>
+                            <input type="tel" class="form-control rounded-input" id="mobile" name="mobile" placeholder="Enter your registered mobile number">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Search Reports</button>
+                        </div>
+                    </form>
+
+                    {% if error %}
+                    <div class="alert alert-danger mt-3 text-center">{{ error }}</div>
+                    {% elif reports_found %}
+                    <div class="card mt-4 p-4 shadow-sm">
+                        <h4 class="card-title text-center mb-4">Found Reports:</h4>
+                        {% for report in reports_found %}
+                        <div class="mb-4 p-3 border rounded">
+                            <h5 class="mb-2"><strong>Report ID:</strong> <span class="text-primary">{{ report.report_tracking_id | default('N/A') }}</span></h5>
+                            <p class="mb-1"><strong>Status:</strong> <span class="status-{{ report.status | lower | replace(' ', '-') }}">{{ report.status | default('N/A') | capitalize }}</span></p>
+
+                            {# Show halt message/instructions if present (visible to users) #}
+                            {% if report.halt_message or report.halt_instructions %}
+                            <div class="alert alert-warning mt-2">
+                                <h6 class="mb-2">Halted — Additional Information</h6>
+                                {% if report.halt_message %}
+                                    <p class="mb-1"><strong>Reason:</strong> {{ report.halt_message }}</p>
+                                {% endif %}
+                                {% if report.halt_instructions %}
+                                    <p class="mb-0"><strong>Next Steps:</strong> {{ report.halt_instructions }}</p>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Progress Bar Section -->
+                            <div class="my-3">
+                                {% set stages = ['received', 'in progress', 'resolved', 'final report uploaded'] %}
+                                
+                                {# Determine which stage is active #}
+                                {% if report.final_report_file and report.final_report_file != "N/A" %}
+                                    {% set current_stage_index = 3 %}
+                                {% else %}
+                                    {% set current_stage_index = stages.index(report.status | lower) if report.status | lower in stages[:3] else 0 %}
+                                {% endif %}
+
+                                <div class="progress" style="height: 30px; border-radius: 15px;">
+                                    {% for stage in stages %}
+                                    {% set stage_index = loop.index0 %}
+                                    {% if stage_index <= current_stage_index %}
+                                        {% set bg_color = 'bg-success' %}
+                                    {% else %}
+                                        {% set bg_color = 'bg-light' %}
+                                    {% endif %}
+                                    <div class="progress-bar {{ bg_color }}" role="progressbar" style="width: 25%; border-right: 1px solid #fff;" aria-valuenow="{{ stage_index }}" aria-valuemin="0" aria-valuemax="3">
+                                        <small class="d-block text-center text-dark">{{ stage | capitalize }}</small>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <p class="mb-1"><strong>Predicted Category:</strong> {{ report.predicted_category | default('N/A') }}</p>
+                            <p class="mb-1"><strong>Predicted Urgency:</strong> {% set urgency = report.predicted_urgency | default('N/A') %}<span class="urgency-{{ urgency | lower }}">{{ urgency }}</span></p>
+                            <p class="mb-1"><strong>Description:</strong> {{ report.description | default('N/A') | truncate(100, True, '...') }}</p>
+                            <p class="mb-1"><strong>Submitted On:</strong> {{ report.date_submitted | default('N/A') }}</p>
+                            <hr class="my-3">
+
+                            <p class="mb-1">
+                                <strong>Initial Evidence:</strong>
+                                {% if report.evidence_file and report.evidence_file != "N/A" %}
+                                    <a href="{{ url_for('static', filename=report.evidence_file) }}" target="_blank" class="btn btn-sm btn-info ms-2"><i class="fas fa-file-alt me-1"></i> View Initial File</a>
+                                {% else %}
+                                    No file uploaded.
+                                {% endif %}
+                            </p>
+
+                            <p class="mb-0 mt-2">
+                                <strong>Final Report:</strong>
+                                {% if report.final_report_file and report.final_report_file != "N/A" %}
+                                    <a href="{{ url_for('static', filename=report.final_report_file) }}" target="_blank" class="btn btn-sm btn-success ms-2">
+                                        <i class="fas fa-download me-1"></i> Download Final Report
+                                    </a>
+                                {% else %}
+                                    Not yet available.
+                                {% endif %}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info mt-3 text-center">
+                        Search results will appear here.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

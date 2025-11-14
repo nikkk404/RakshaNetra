@@ -1,0 +1,571 @@
+description,label,urgency
+"My ex is posting my private photos on Twitter without my consent and sharing them with my family. I'm so scared.",Blackmailing,High
+"Received a scary email with an old password of mine in the subject line, demanding I pay bitcoin or they'll release a 'compromising video' of me.",Blackmailing,High
+"Someone is threatening to tell my boss about my past unless I send them $500 through Zelle.",Blackmailing,High
+"Extortionist claims they have my search history and will send it to all my contacts if I don't pay up.",Blackmailing,High
+"I was getting harassed online, just mean comments, but now they posted my home address in the forum.",Cyberbullying,Medium
+"A group of people from my school keep making fake profiles of me and posting embarrassing lies. It's affecting my mental health.",Cyberbullying,Low
+"Just constant mean messages from an anonymous account on Instagram. I block them and they make a new one.",Cyberbullying,Low
+"I saw a charge on my credit card for $250 from a company I've never heard of. I've already called my bank to dispute it.",Financial Fraud,Medium
+"My bank account was completely drained overnight. I checked my balance and it's zero, I don't know what to do.",Financial Fraud,High
+"Someone intercepted a check I mailed, changed the name and the amount, and cashed it.",Financial Fraud,High
+"I got a call from my 'bank's fraud department' saying there was an issue and I needed to transfer my money to a 'safe' account. I did it, and now the money is gone.",Vishing,High
+"A new credit card from Capital One showed up at my house, but I never applied for it. I think someone used my social security number.",Identity Theft,High
+"I got a notice from a debt collector about a hospital bill in another state for a hospital I've never been to.",Identity Theft,Medium
+"My credit score dropped 100 points because someone took out a car loan in my name.",Identity Theft,High
+"My laptop has been running really slow and weird pop-ups keep appearing, even when I'm not on the internet.",Malware,Medium
+"My antivirus software just alerted me that it quarantined a trojan horse. My PC seems okay now but I'm worried.",Malware,Low
+"I downloaded a 'free' video editor and now my browser homepage is changed and I'm getting a million ads.",Malware,Low
+"I tried to buy a PS5 from a website that looked legitimate. I sent the payment, they sent a fake tracking number, and now the site is gone.",Online Shopping Scam,Low
+"The item I received from an online ad was a cheap, broken knockoff. The seller won't respond to my emails.",Online Shopping Scam,Low
+"I paid for concert tickets on Facebook Marketplace, and the seller blocked me right after I sent the money.",Online Shopping Scam,Low
+"I got an email that looked like it was from Netflix, saying my account was suspended. I clicked the link and entered my login and credit card info on a page that looked real.",Phishing,High
+"My mom got a text message (smishing) that said there was a problem with her package delivery and to click a link to reschedule. It asked for her address and personal info.",Phishing,Medium
+"My work email got a message from 'IT' asking everyone to migrate to a new mail server by clicking a link and entering their credentials. I think it was a scam.",Phishing,Medium
+"My entire server is encrypted and a file on the desktop called README.txt says I need to pay 0.5 BTC to a wallet to get the decryption key. My business is at a standstill.",Ransomware,High
+"I can't open any of my photos or documents, they all have a weird .locked extension now. A popup is demanding money.",Ransomware,High
+"My Facebook account was hacked. They changed the password and email so I can't get back in, and now it's posting spam links to all my friends.",Social Media Account Hacked,Medium
+"Someone got into my Instagram and is sending DMs to my followers asking for money for a 'family emergency'. I'm still logged in but I can see the messages being sent.",Social Media Account Hacked,Medium
+"I was tricked by a person on a dating app over several months into investing all my savings into a fake crypto platform. They've now disappeared with my money.",Social Engineering,High
+"My boss supposedly emailed me asking me to buy $500 in Google Play gift cards for a client and send him the codes. I did it before realizing his email was spoofed.",Social Engineering,High
+"A 'support agent' from Microsoft called me to say my computer was sending error signals. I gave him remote access and he showed me 'viruses' and asked for $300 to fix it.",Vishing,Medium
+"Got a robocall claiming to be from the IRS saying there's a warrant for my arrest due to tax evasion and I need to call a number immediately.",Vishing,Low
+"Received an email with my home address in it, saying I was recorded on an adult website and to pay up or the video gets sent to my family and friends.",Blackmailing,High
+"The abuse online has escalated. After posting my address, someone has started ordering pizzas to my house and threatening to show up in person.",Cyberbullying,High
+"My business partner sent me a wire transfer request, but I called him to confirm and he never sent it. Someone had hacked his email to impersonate him.",Financial Fraud,High
+"I got an email from 'Amazon' about a $1000 TV I didn't order, with a number to call to cancel. I called and they tried to get me to install remote access software.",Vishing,Medium
+"I keep getting notifications that someone is trying to log into my Apple ID from another country.",Identity Theft,Low
+"My company's customer database was breached. All our client names, emails, and phone numbers were leaked. We're trying to figure out what to do now.",Social Engineering,High
+"I ordered a specific brand of jacket online, but the seller sent a completely different, low-quality item and is refusing a refund.",Online Shopping Scam,Low
+"Got an email from 'Paypal' with a link to resolve an account limitation. I hovered over the link and the URL looked very suspicious so I didn't click.",Phishing,Low
+"All my files have been replaced by shortcuts, and my antivirus is going crazy. I think I have a serious virus.",Malware,Medium
+"My computer is fine but I think my email was hacked because my friend told me she received a strange spam message from me.",Social Media Account Hacked,Low
+"Someone created a fake GoFundMe page using my sister's photo and story to fraudulently solicit donations.",Identity Theft,Medium
+"I was a victim of a romance scam. I thought I was in a relationship with someone for months but they just kept asking for money for various emergencies.",Social Engineering,Medium
+"A person on the phone claimed they were from my utility company and that my power would be shut off in 30 minutes if I didn't pay an overdue bill with a gift card.",Vishing,High
+"Threatening to post edited, embarrassing photos of me if I don't stop talking to a certain person.",Blackmailing,Medium
+"The online bullying is just wearing me down. It's not a direct threat but it's constant and cruel.",Cyberbullying,Low
+"My bank called to confirm if I made a $2,000 purchase in another country. I told them no and they froze my card.",Financial Fraud,Medium
+"Someone gained access to our internal server after an employee clicked on a malicious link in an invoice email.",Phishing,High
+"My gaming account, with hundreds of dollars in purchased items, was stolen. The email and password were changed.",Social Media Account Hacked,Medium
+"I fell for one of those 'secret shopper' scams. They sent me a large check, told me to deposit it, and wire a portion of it to someone else. The original check bounced and now I'm out the money I wired.",Financial Fraud,High
+"My child is being relentlessly bullied in a group chat for a game they play online. They're afraid to go online now.",Cyberbullying,Low
+"I keep getting password reset requests for my accounts that I didn't initiate.",Identity Theft,Low
+"A site that looks exactly like my bank's login page showed up in a google search result. I almost entered my password.",Phishing,Low
+"I can't access my small business's network drives. A message on the screen says we've been hit by 'Ryuk' ransomware.",Ransomware,High
+"An unknown person is sending messages to my colleagues from a fake email address that looks like mine, trying to get them to share project files.",Social Engineering,Medium
+"I was selling an item on Craigslist and the 'buyer' sent me a check for way more than the asking price and asked me to wire back the difference.",Financial Fraud,Medium
+"My phone is acting weird after I installed an app from outside the official app store. The battery is draining fast and it's overheating.",Malware,Medium
+"An old classmate is posting embarrassing photos from my past on Instagram and tagging my employer.",Blackmailing,Medium
+"I received a text message with a link to a video, supposedly of me. The message says I need to pay $1000 in bitcoin or the video goes to my family.",Blackmailing,High
+"Someone found my private journal and is threatening to publish excerpts of it online unless I do what they say.",Blackmailing,High
+"My ex is threatening to send explicit photos we took together to my new partner if I don't talk to them.",Blackmailing,High
+"A user on a gaming forum is threatening to DDOS my internet connection and leak my IP address because I beat them in a match.",Blackmailing,High
+"I'm being blackmailed with information about a past mistake. They demand payment to keep it quiet.",Blackmailing,High
+"Someone is claiming to have hacked my webcam and recorded me. They're demanding money to destroy the footage.",Blackmailing,High
+"I'm getting threatening DMs on Twitter, saying they know where I live and are watching me.",Blackmailing,High
+"An extortionist emailed me saying they have proof of me cheating and will tell my spouse if I don't pay.",Blackmailing,High
+"A coworker is threatening to report me for a minor policy violation unless I cover their shifts for them.",Blackmailing,Medium
+"My daughter is being excluded and ridiculed in a class group chat. It's constant and she is very upset.",Cyberbullying,Low
+"A group of anonymous accounts are coordinating to leave hateful and false reviews on my small business's Yelp page.",Cyberbullying,Medium
+"Someone keeps making fun of my appearance in the comments of my public photos. I've blocked them but they make new accounts.",Cyberbullying,Low
+"I'm being targeted in a subreddit where users are posting my social media info and encouraging others to harass me.",Cyberbullying,Medium
+"After a political disagreement online, a person has been sending me dozens of hateful messages a day and encouraging their followers to do the same.",Cyberbullying,Medium
+"There's a fake profile of me on Facebook being used to say horrible things to my friends and family.",Cyberbullying,Medium
+"A person online is spreading lies about my professional conduct to try and get me fired.",Cyberbullying,Medium
+"My child is being cyberbullied by classmates who are sending cruel memes and messages.",Cyberbullying,Low
+"The online harassment has become unbearable. It's not a direct threat but it's constant and cruel.",Cyberbullying,Low
+"Someone is repeatedly leaving offensive comments on my blog posts under different names.",Cyberbullying,Low
+"I saw a charge on my credit card statement for a subscription service I never signed up for.",Financial Fraud,Medium
+"My bank account was completely drained overnight. I checked my balance and it's zero, I don't know what to do.",Financial Fraud,High
+"I fell for a 'secret shopper' scam. They sent me a large check, told me to deposit it, and wire a portion of it. The original check bounced.",Financial Fraud,High
+"Someone used my debit card number to make a bunch of online purchases. I've already called my bank.",Financial Fraud,High
+"I sold an item on Marketplace, the buyer paid with Zelle, and then they disputed the charge after I shipped the item, reversing the payment.",Financial Fraud,High
+"My business partner sent me a wire transfer request, but I called him to confirm and he never sent it. Someone had hacked his email.",Financial Fraud,High
+"I invested in a stock recommended by an online 'guru'. The price was pumped up and then crashed, and I lost all my money.",Financial Fraud,Medium
+"A company I've never heard of has been taking small amounts, like $5.99, from my bank account every month.",Financial Fraud,Medium
+"I got a fraudulent charge notification from my bank for a purchase made in a different country.",Financial Fraud,High
+"Someone intercepted a check I mailed, altered the payee name and amount, and cashed it.",Financial Fraud,High
+"My social security number was used to file a fraudulent tax return and claim a refund in my name.",Identity Theft,High
+"A new credit card from Capital One showed up at my house, but I never applied for it.",Identity Theft,High
+"I got a notice from a debt collector about a hospital bill in another state for a hospital I've never been to.",Identity Theft,Medium
+"My credit score dropped 100 points because someone took out a car loan in my name.",Identity Theft,High
+"The police contacted me because my name and address were used by someone who was arrested.",Identity Theft,High
+"I've been getting rejection letters for apartments and found out it's because someone with my name and SSN has an eviction on their record.",Identity Theft,High
+"Someone used my identity to open a new cell phone account, and now I have a huge bill from a carrier I don't use.",Identity Theft,Medium
+"I received a data breach notification from a service I use, saying my personal information, including my SSN, was exposed.",Identity Theft,Medium
+"Someone created a fake GoFundMe page using my sister's photo and tragic story to fraudulently solicit donations.",Identity Theft,Medium
+"I keep getting password reset requests for my accounts that I didn't initiate, suggesting someone has my email and is trying to access my life.",Identity Theft,Low
+"My laptop has been running really slow and weird pop-ups keep appearing, even when I'm not on the internet.",Malware,Medium
+"My antivirus software just alerted me that it quarantined a trojan horse named 'Zeus'. My PC seems okay now but I'm worried.",Malware,Medium
+"I downloaded a 'free' video editor and now my browser homepage is changed to a weird search engine and I'm getting a million ads.",Malware,Low
+"My phone is acting weird after I installed an app from outside the official app store. The battery is draining fast and it's overheating.",Malware,Medium
+"All my files have been replaced by shortcuts, and my antivirus is going crazy. I think I have a serious virus.",Malware,High
+"I accidentally clicked on a malicious ad and now my mouse is moving on its own sometimes.",Malware,High
+"My computer's webcam light turns on randomly, even when I'm not using it. I'm scared someone is spying on me.",Malware,High
+"After visiting a sketchy streaming site, my browser started redirecting to gambling websites.",Malware,Low
+"I got a security alert from my PC that 'keylogger' software was detected and removed.",Malware,Medium
+"My computer is making a weird buzzing sound and running very hot ever since I downloaded a file from a torrent site.",Malware,Medium
+"I tried to buy a PS5 from a website that looked legitimate. I sent the payment, they sent a fake tracking number, and now the site is gone.",Online Shopping Scam,Low
+"The item I received from an online ad was a cheap, broken knockoff of the real thing. The seller won't respond to my emails.",Online Shopping Scam,Low
+"I paid for concert tickets on Facebook Marketplace, and the seller blocked me right after I sent the money.",Online Shopping Scam,Low
+"An Instagram boutique took my order and payment over two months ago and has not shipped the item or replied to my DMs.",Online Shopping Scam,Low
+"I pre-ordered a limited edition item from a small online shop. They've delayed shipping three times and are now ignoring refund requests.",Online Shopping Scam,Low
+"The product I bought has a 5-star rating with hundreds of reviews, but now I realize they are all fake and generic.",Online Shopping Scam,Low
+"I fell for a dropshipping scam. The item took 6 weeks to arrive from overseas and is of terrible quality, not what was advertised.",Online Shopping Scam,Low
+"The rental car I booked online from a third-party site didn't exist when I got to the airport counter.",Online Shopping Scam,Medium
+"I won an auction on eBay, paid the seller, and they never shipped the item. eBay is now investigating.",Online Shopping Scam,Low
+"I ordered a custom-made piece of furniture. The seller sent progress photos, but after the final payment, they disappeared.",Online Shopping Scam,Medium
+"I got an email that looked like it was from Netflix, saying my account was suspended. I clicked the link and entered my login and credit card info on a page that looked real.",Phishing,High
+"My mom got a text message (smishing) that said there was a problem with her package delivery and to click a link to reschedule. It asked for her address and personal info.",Phishing,Medium
+"My work email got a message from 'IT' asking everyone to migrate to a new mail server by clicking a link and entering their credentials. I think it was a scam.",Phishing,Medium
+"Received an email from 'Amazon' about a $1000 TV I didn't order, with a number to call to cancel. I knew it was a phish to get me on the phone.",Phishing,Medium
+"Got an email from 'Paypal' with a link to resolve an account limitation. I hovered over the link and the URL looked very suspicious so I didn't click.",Phishing,Low
+"A site that looks exactly like my bank's login page showed up in a google search result. I almost entered my password.",Phishing,High
+"I received a QR code in the mail for a 'special discount'. I scanned it and it took me to a malicious website asking for my info.",Phishing,Medium
+"An email claiming I won a lottery is asking me to pay a 'processing fee' to receive my winnings.",Phishing,Medium
+"My company's finance department received a fraudulent invoice email with a link to a fake payment portal.",Phishing,High
+"I got a message on Discord from a 'friend' asking me to test their new game. The link was a password stealer.",Phishing,High
+"My entire server is encrypted and a file on the desktop called README.txt says I need to pay 0.5 BTC to a wallet to get the decryption key. My business is at a standstill.",Ransomware,High
+"I can't open any of my photos or documents, they all have a weird .locked extension now. A popup is demanding money.",Ransomware,High
+"A message on my screen says all my files have been hit by 'Ryuk' ransomware and I have 72 hours to pay.",Ransomware,High
+"My small business's point-of-sale system has been locked by ransomware. We can't process any sales.",Ransomware,High
+"I clicked on a malicious email attachment and now a scary screen has taken over my computer demanding payment.",Ransomware,High
+"The hospital's network is down. All patient records are inaccessible and a news report says it's a ransomware attack.",Ransomware,High
+"My web server was compromised and the hackers are demanding a ransom to not leak my customer data.",Ransomware,High
+"My computer is locked and a ransom note is displayed. It says my files will be deleted if I don't pay within 24 hours.",Ransomware,High
+"I can't access my Quickbooks files for my business. A text file in the folder contains a ransom demand.",Ransomware,High
+"A hacker encrypted my research data for my PhD and is demanding payment for the key.",Ransomware,High
+"My Facebook account was hacked. They changed the password and email so I can't get back in, and now it's posting spam links.",Social Media Account Hacked,Medium
+"Someone got into my Instagram and is sending DMs to my followers asking for money for a 'family emergency'.",Social Media Account Hacked,Medium
+"My gaming account, with hundreds of dollars in purchased items, was stolen. The email and password were changed.",Social Media Account Hacked,Medium
+"My Twitter account was compromised and is now promoting a cryptocurrency scam.",Social Media Account Hacked,Medium
+"I lost access to my social media account, and now the profile picture and name have been changed to something offensive.",Social Media Account Hacked,Medium
+"My computer is fine but I think my email was hacked because my friend told me she received a strange spam message from me.",Social Media Account Hacked,Low
+"Someone keeps logging into my TikTok account from another location and liking random videos.",Social Media Account Hacked,Low
+"I can't access my LinkedIn account anymore. The associated phone number for recovery has been changed.",Social Media Account Hacked,Medium
+"My YouTube channel was hijacked and all my videos were deleted. It's now streaming a crypto scam 24/7.",Social Media Account Hacked,High
+"I found my stolen photos being posted from my own hacked Facebook account.",Social Media Account Hacked,Medium
+"I was tricked by a person on a dating app over several months into investing all my savings into a fake crypto platform.",Social Engineering,High
+"My boss supposedly emailed me asking me to buy $500 in Google Play gift cards for a client and send him the codes. I did it before I realized it was a scam.",Social Engineering,High
+"Someone pretended to be my boss on Slack and asked me to share a confidential customer list. I almost did it.",Social Engineering,Medium
+"I received a USB drive in the mail with 'Company Bonus Info' written on it. I plugged it in and it installed malware.",Social Engineering,High
+"A person on the phone gained my trust by knowing my mother's maiden name and my last four digits of my SSN, then tricked me into giving them a password.",Social Engineering,High
+"My company's customer database was breached after an employee clicked on a malicious link in a targeted phishing email.",Social Engineering,High
+"I was a victim of a romance scam. I thought I was in a relationship for months but they just kept asking for money.",Social Engineering,Medium
+"A 'friend' on Facebook messaged me asking for my phone number to help them get a code to get back into their account. It was a scam to take over my account.",Social Engineering,Medium
+"Someone pretended to be a trusted contact to gain access to my building by tailgating behind me.",Social Engineering,Medium
+"I got a fraudulent job offer that required me to pay for 'training materials' upfront.",Social Engineering,Low
+"A 'support agent' from Microsoft called me to say my computer was sending error signals. I gave him remote access and he asked for $300 to fix 'viruses'.",Vishing,Medium
+"Got a robocall claiming to be from the IRS saying there's a warrant for my arrest due to tax evasion.",Vishing,Low
+"I got a call from my 'bank's fraud department' saying there was an issue and I needed to transfer my money to a 'safe' account.",Vishing,High
+"A person on the phone claimed they were from my utility company and that my power would be shut off in 30 minutes if I didn't pay with a gift card.",Vishing,High
+"I received a call from someone claiming to be from Apple Support, saying my iCloud was compromised. They asked for my password.",Vishing,High
+"A scammer called me pretending to be tech support and convinced me to install remote access software on my work computer.",Vishing,High
+"I got a vishing call where they already knew my name and address, which made them sound more legitimate.",Vishing,Medium
+"A voice message said I'd won a cruise and just needed to call back and provide my credit card to cover port fees.",Vishing,Low
+"Someone called pretending to be a grandchild in trouble, asking me to wire money for bail.",Vishing,High
+"My caller ID showed my own phone number calling me. When I picked up, it was a recording about my car's extended warranty.",Vishing,Low
+"I received an email pretending to be from Amazon, saying my account was suspended. It had a link to a fake login page that looked real.",Phishing,Medium
+"A popup on a website said my computer was infected and I had to call a Microsoft support number immediately. The person on the phone wanted remote access.",Technical Support Scam,High
+"All of my personal photos and documents on my PC now have a .LOCKED file extension and I can't open them. A text file on my desktop is demanding $500 in Bitcoin.",Ransomware,High
+"Someone I matched with on a dating app convinced me to invest in a new cryptocurrency. After I sent the money, they deleted their profile and the investment site vanished.",Financial Fraud,High
+"A group of people from my school created a group chat where they constantly post embarrassing and edited photos of me.",Cyberbullying,Medium
+"I got a text message from a number I don't know with a photo of my house, threatening to release my personal information if I don't pay them.",Blackmailing,High
+"My company's server was breached and customer data, including names and addresses, was stolen. We're now getting extortion emails.",Data Breach,High
+"Someone is using my photos and name to run a fake Instagram account. They are messaging my followers asking them for money.",Social Media Account Hacked,Medium
+"I noticed a charge on my credit card statement for a flight to another country that I never booked.",Identity Theft,Medium
+"I bought a new phone from a website I found on Facebook Marketplace, but the seller never shipped it and has stopped responding to my messages.",Online Shopping Scam,Low
+"I got an urgent call from someone claiming to be from my bank's fraud department. They said there was a suspicious transaction and needed my OTP to block it.",Vishing,High
+"My son keeps getting horrible, threatening messages on his gaming account from another player.",Cyberbullying,Medium
+"I was tricked into giving away my password for my email account through a social engineering attack. Now I'm locked out.",Social Engineering,Medium
+"My antivirus software keeps flagging a program called 'SearchOptimizer' as a threat, but it won't go away. My browser homepage has been changed.",Malware,Low
+"An ex-partner has threatened to send intimate photos of me to my family and my employer if I don't get back together with them.",Blackmailing,High
+"I found out someone opened several store credit cards under my name after getting a letter from a collection agency.",Identity Theft,High
+"A person on the phone claiming to be from the IRS said I had unpaid taxes and would be arrested if I didn't pay immediately with gift cards.",Vishing,High
+"My entire work computer has been frozen by a ransomware attack. A timer on the screen is counting down, saying the price to unlock it will double.",Ransomware,High
+"I got an email with a shipping confirmation for an expensive item I never ordered. The tracking link downloaded a weird zip file to my computer.",Phishing,Medium
+"Someone hacked my Twitter account and started posting cryptocurrency scams. I managed to get it back and change the password.",Social Media Account Hacked,Medium
+"I paid for a custom piece of furniture from an online artisan, but months have passed and they are no longer responding to emails.",Online Shopping Scam,Low
+"My computer has become incredibly slow and is showing constant pop-up ads, even when my web browser is closed.",Malware,Low
+"A fake antivirus alert froze my browser and instructed me to call a support line to fix it. They wanted to charge me $200 for a 'lifetime license'.",Technical Support Scam,High
+"An investment opportunity I found on Telegram promised huge returns, but after I transferred my crypto, the group administrator blocked me.",Financial Fraud,High
+"I received an official-looking email from my health insurance provider stating that their database was compromised and my personal health information was exposed.",Data Breach,High
+"I got an email that appeared to be from my boss, asking me to urgently buy several gift cards for a client and send him the codes.",Social Engineering,Medium
+"Someone created a fake Instagram profile with my photos and is messaging my friends pretending to be me.",Impersonation,Medium
+"A person I met online is constantly pressuring me to send inappropriate pictures even though I am under 18.",Child Exploitation,High
+"A viral WhatsApp forward is spreading fake news about free COVID vaccines requiring personal details, but it was completely false.",Fake News,Low
+"I invested in a new crypto token on Telegram, and the developers disappeared after cashing out.",Cryptocurrency Fraud,High
+"I applied for a remote job and was asked to pay ₹5000 upfront for 'training material'.",Job Scam,Medium
+"A scammer used AI to clone my boss's voice on a call, asking for an urgent money transfer.",Social Engineering,High
+"A fake bank app was circulating on Play Store. I downloaded it and my UPI transactions started disappearing.",Malware,High
+"My Gmail account got hacked and the attacker set up filters to forward all emails to their address.",Social Media Account Hacked,High
+"Scammer pretended to be from RBI, asking me to update my KYC via a fake link. I entered my Aadhaar and PAN.",Phishing,High
+"I was added to a fake Telegram group about investments. They all kept showing fake profits to trick me.",Financial Fraud,Medium
+"Got a call from someone using caller ID spoofing showing as 'Mumbai Police', demanding money to clear a case.",Vishing,High
+"I was talking to someone on a dating site for weeks, they claimed to be a soldier overseas and scammed me out of money for a 'plane ticket home'.",Online Romance Scam,High
+"A person claiming to be from my bank asked for OTP to verify a transaction I never made.",Vishing,High
+"I received a fake tech support popup that froze my browser and told me to call a number.",Technical Support Scam,High
+"Someone created a fake LinkedIn profile using my photo and job details to scam recruiters.",Identity Theft,Medium
+"I got a message on Telegram about a crypto investment with 300% returns, after transferring I was blocked.",Financial Fraud,High
+"My cousin was tricked on Instagram into investing in Bitcoin mining. The account vanished.",Cryptocurrency Fraud,High
+"A fake government website collected my Aadhaar and PAN details for ‘verification’.",Identity Theft,High
+"I bought sneakers online and received a cheap plastic toy instead.",Online Shopping Scam,Low
+"A popup warned my PC was infected and installed fake antivirus demanding money.",Technical Support Scam,High
+"My business received a ransomware note demanding $10,000 in bitcoin.",Ransomware,High
+"A hacker sent me an email with all my old passwords demanding bitcoin.",Blackmailing,High
+"Harassers keep making fake WhatsApp groups with my child’s number.",Cyberbullying,Medium
+"My mother received a call from fake ‘IRS’ demanding immediate payment with gift cards.",Vishing,High
+"Someone keeps changing my Netflix password and watching shows from abroad.",Social Media Account Hacked,Medium
+"A girl I met on a dating app scammed me for money promising to visit but vanished.",Social Engineering,High
+"A phishing site mimicked my office email login page to steal credentials.",Phishing,High
+"I downloaded a cracked game and now my PC is full of popups and spyware.",Malware,Medium
+"Received repeated harassing messages on Twitter targeting my religion.",Cyberbullying,Medium
+"A fraudster impersonated my CEO and emailed finance to transfer funds.",Social Engineering,High
+"I got a fake invoice in my email asking me to pay $3,000 to a new account.",Financial Fraud,High
+"Threatening DMs on Instagram saying they’ll leak my photos if I don’t pay.",Blackmailing,High
+"A fraudster opened a new SIM card with my Aadhaar and took loans in my name.",Identity Theft,High
+"My teen son is being bullied on Discord by classmates.",Cyberbullying,Low
+"A scammer posing as ‘Amazon support’ called asking me to install AnyDesk.",Vishing,High
+"After installing a free wallpaper app, my phone started sending spam SMS.",Malware,Medium
+"A fake crypto exchange stole my Ethereum after I deposited funds.",Cryptocurrency Fraud,High
+"I got an SMS claiming I won a car, but needed to pay ‘processing fees’.",Vishing,Medium
+"My Facebook was hacked and now spreading fake giveaways.",Social Media Account Hacked,Medium
+"A spammer created a fake Tinder profile using my photos.",Identity Theft,Medium
+"Scammer posing as a recruiter asked me to pay ₹5000 for a fake job interview.",Financial Fraud,High
+"A call center scam tricked my grandmother into giving remote PC access.",Technical Support Scam,High
+"I got a fraudulent PayPal email asking me to ‘verify account’.",Phishing,Medium
+"An unknown person sent emails claiming to have hacked my webcam.",Blackmailing,High
+"My gaming account worth thousands was stolen and resold online.",Social Media Account Hacked,High
+"A student portal breach leaked my grades and personal data online.",Data Breach,Medium
+"A fake WhatsApp link promised free recharge but stole my data.",Phishing,Low
+"My boss’s hacked email asked me to urgently share payroll details.",Social Engineering,High
+"Someone impersonated my business on Instagram and is selling fake products.",Identity Theft,Medium
+"I fell for a job scam that asked for a security deposit upfront.",Social Engineering,Medium
+"My YouTube channel was hacked and used to livestream crypto scams.",Social Media Account Hacked,High
+"A ransomware attack encrypted all files on my office server.",Ransomware,High
+"I keep receiving offensive memes targeting me in a Telegram group.",Cyberbullying,Medium
+"My debit card was skimmed at an ATM and used for purchases abroad.",Financial Fraud,High
+"A fraudster posing as a government officer asked me for PAN details.",Identity Theft,High
+"A popup said my iPhone was hacked and to call Apple support immediately.",Technical Support Scam,Medium
+"Someone on Facebook Marketplace tricked me into paying for furniture never delivered.",Online Shopping Scam,Low
+"A Telegram scam group promised insider stock tips for a fee.",Financial Fraud,Medium
+"A phishing QR code placed on an ATM machine stole my login credentials.",Phishing,High
+"Scammer created fake Instagram giveaways using my photos.",Identity Theft,Low
+"My cloud storage was hacked and files deleted permanently.",Data Breach,High
+"A Discord scam tricked me into downloading malware disguised as a game mod.",Malware,High
+"A fake credit card company called me offering pre-approved loans and stole my info.",Financial Fraud,High
+"My child’s photos were stolen from Instagram and used on a fake profile.",Identity Theft,High
+"A fake antivirus email claimed I had 1000 viruses and needed to pay to remove them.",Technical Support Scam,Medium
+"A ransomware note demanded payment in Monero cryptocurrency.",Ransomware,High
+"I got a fake call pretending to be my bank asking for debit card PIN.",Vishing,High
+"My photos were edited into inappropriate memes and spread in school groups.",Cyberbullying,High
+"A fraudster impersonated a police officer to scare me into paying fines.",Vishing,Medium
+"Fake scholarships were offered online in exchange for Aadhaar and bank details.",Financial Fraud,Medium
+"My cousin invested in a fake online gold scheme and lost ₹50,000.",Financial Fraud,High
+"A phishing SMS asked me to update my KYC immediately or my account would freeze.",Phishing,High
+"A fake charity asked for donations after a natural disaster.",Social Engineering,Medium
+"My phone camera light keeps turning on by itself after installing a free app.",Malware,High
+"A fake WhatsApp group admin is collecting personal data from members.",Identity Theft,Medium
+"My Telegram account was hacked and used to scam my contacts.",Social Media Account Hacked,High
+"A fake browser extension stole my saved passwords.",Malware,High
+"An attacker sent me emails with threats about sharing my private browsing history.",Blackmailing,High
+"My Instagram DMs are full of scam links from hacked accounts.",Social Media Account Hacked,Low
+"A fraudster used deepfake voice to impersonate my boss during a call.",Social Engineering,High
+"A fake matrimonial website scammed my friend by collecting dowry money.",Financial Fraud,High
+"My PC files got encrypted with WannaCry ransomware.",Ransomware,High
+"I got a fake lottery winning email demanding a processing fee.",Phishing,Medium
+"Someone made a fake LinkedIn profile with my resume to scam others.",Identity Theft,Low
+"A fraudster tricked my uncle into paying for fake medical bills online.",Financial Fraud,High
+"My Gmail was hacked and spam emails were sent to all my contacts.",Social Media Account Hacked,Medium
+"A scammer tricked me into giving OTP for UPI payment reversal.",Vishing,High
+"A fake free WiFi hotspot stole my login credentials.",Phishing,Medium
+"My work server was breached and sensitive employee records leaked.",Data Breach,High
+"Classmates are making cruel TikTok videos mocking me.",Cyberbullying,Medium
+"I paid for a gaming console online but never received it.",Online Shopping Scam,Low
+"A fake recruiter promised me a work-from-home job and took money for training.",Financial Fraud,High
+"A ransomware attack locked my medical records at a hospital.",Ransomware,High
+"A fake pop-up asked me to download a Flash update that installed spyware.",Malware,Medium
+"My identity was used to register fake SIM cards for criminal activity.",Identity Theft,High
+"A scammer tricked me with a fake website that cloned Flipkart.",Online Shopping Scam,Low
+"I got an SMS saying my electricity would be cut off unless I paid via link.",Phishing,High
+"My Telegram was hacked after I clicked a malicious link.",Social Media Account Hacked,Medium
+"A fraudster asked for advance rent payment for a house that didn’t exist.",Financial Fraud,High
+"Threatening messages saying I will be kidnapped unless I pay online.",Blackmailing,High
+"A fake survey link stole my credit card details.",Phishing,Medium
+"My Fortnite account was stolen and sold online.",Social Media Account Hacked,Medium
+"A caller claimed to be RBI and asked me to confirm my bank account.",Vishing,High
+"My computer has random files appearing after installing pirated software.",Malware,Medium
+"A scammer convinced me to invest in fake cryptocurrency mining machines.",Financial Fraud,High
+"My WhatsApp was hijacked after I shared the verification code mistakenly.",Social Media Account Hacked,High
+"A ransomware note said my files would be leaked if I didn’t pay.",Ransomware,High
+"My ex is sending threats to post my private chats online.",Blackmailing,High
+"A fake Facebook page is selling products in my brand’s name.",Identity Theft,Medium
+"Someone tricked my parents with a fake insurance claim.",Financial Fraud,High
+"A scammer cloned my SIM card and accessed my bank account.",Identity Theft,High
+"A malicious email attachment installed spyware on my laptop.",Malware,High
+"My photos are being used in fake online dating profiles.",Identity Theft,High
+"A scammer tricked me into paying advance fees for a fake loan.",Financial Fraud,High
+"My business server was encrypted by ransomware demanding $10,000.",Ransomware,High
+"A fraudster impersonated a delivery service and stole my OTP.",Vishing,High
+"Fake online store scammed me by selling counterfeit clothes.",Online Shopping Scam,Low
+"My Telegram channel was hacked and used for crypto scams.",Social Media Account Hacked,High
+"A scammer pretended to be my boss over email asking for urgent money transfer.",Social Engineering,High
+"A fake tech support agent asked me to download AnyDesk for 'repairs'.",Technical Support Scam,High
+"My bank account was debited after I clicked a phishing link.",Phishing,High
+"A scammer used deepfake video to impersonate a politician for donations.",Social Engineering,High
+"My WhatsApp groups were spammed with offensive messages by hacked accounts.",Cyberbullying,Medium
+"A ransomware note demanded iTunes gift cards as payment.",Ransomware,High
+"A scammer impersonated my friend on Instagram asking for emergency money.",Social Media Account Hacked,High
+"My Aadhaar number was leaked in a government data breach.",Data Breach,High
+"A fake charity website scammed people after floods.",Financial Fraud,High
+"My account credentials were stolen from a public computer.",Phishing,Medium
+"A fraudster created a fake Paytm KYC website and stole money.",Phishing,High
+"Threatening calls demanded ransom for releasing my hacked files.",Blackmailing,High
+"My Twitter account is posting spam links after being hacked.",Social Media Account Hacked,Medium
+"A fake online car rental service scammed me with upfront payment.",Online Shopping Scam,Medium
+"My webcam was hacked and I received threats of exposure.",Blackmailing,High
+"A caller posed as an IT admin and stole employee passwords.",Vishing,High
+"My Facebook page was cloned and used to scam people.",Identity Theft,High
+"A fake mobile recharge app stole my debit card details.",Malware,High
+"My school classmates created a hate page targeting me.",Cyberbullying,Medium
+"A ransomware attack crippled my college’s IT systems.",Ransomware,High
+"A scammer promised high returns on stock trading and vanished.",Financial Fraud,High
+"My SIM was swapped without my consent and used for fraud.",Identity Theft,High
+"A fake app on Play Store stole thousands of user details.",Malware,High
+"My Gmail received fake Apple support phishing emails.",Phishing,Medium
+"A hacker accessed our company payroll data.",Data Breach,High
+"A scammer made me transfer money to a fake Army officer account.",Financial Fraud,High
+"My online portfolio was hacked and defaced.",Social Media Account Hacked,Medium
+"A fake property listing scammed me out of a deposit.",Financial Fraud,High
+"My ex is threatening to leak private screenshots online.",Blackmailing,High
+"A scammer tricked me with a fake online internship.",Financial Fraud,Medium
+"A ransomware note locked my system and asked for Bitcoin.",Ransomware,High
+"A fake survey promised free vouchers but stole personal data.",Phishing,Low
+"My Instagram influencer account was hacked and followers scammed.",Social Media Account Hacked,High
+"A caller said they were from Income Tax and demanded bank details.",Vishing,High
+"A fake courier service scammed me for delivery charges.",Online Shopping Scam,Low
+"My child is being bullied with edited images on Snapchat.",Cyberbullying,High
+"A fake job consultant scammed me for processing fees.",Financial Fraud,High
+"My cloud storage was hacked and private files leaked.",Data Breach,High
+"A scammer impersonated a doctor online and asked for donations.",Social Engineering,Medium
+"My WhatsApp account was locked after repeated login attempts.",Social Media Account Hacked,Medium
+"A ransomware attack targeted my home WiFi network.",Ransomware,High
+"A scammer used phishing to steal my Amazon credentials.",Phishing,High
+"My college website was hacked and defaced with fake messages.",Data Breach,Medium
+"I received a WhatsApp message saying my Paytm wallet has been frozen; the link asked for OTP and Aadhaar details — after I entered them, ₹12,500 was transferred out.",Financial Fraud,High
+"An account impersonating my company’s HR messaged staff on WhatsApp and requested scanned Aadhaar and bank details for 'salary processing'.",Social Engineering,High
+"A caller claiming to be from SBI fraud department used my name and convinced me to share the mPIN; they transferred money using UPI immediately.",Vishing,High
+"A fake e-commerce app on the Play Store used my card details after I entered them during checkout; bank statements show repeated micro-charges.",Malware,High
+"My college placement portal credentials were stolen and student resumes were posted on a fraudulent job site asking for 'registration fees'.",Data Breach,Medium
+"Someone created a duplicate Gmail account in my name and started sending refund request emails to my clients asking them to deposit to a different bank account.",Identity Theft,High
+"An extortionist messaged me from an anonymous Telegram handle claiming to have private screenshots of me taken during a Zoom call; demanded payment in Bitcoin.",Blackmailing,High
+"A cloud-backup service we use reported a security incident and a CSV containing employee names, PANs and phone numbers was posted on a paste site.",Data Breach,High
+"My Instagram influencer page was hacked; the attacker changed linked phone and email and started posting paid promo links to sketchy products.",Social Media Account Hacked,Medium
+"A seller on OLX took payment via UPI but never shipped the car parts; the UPI transaction reversed claiming 'disputed transfer' and buyer lost money.",Online Shopping Scam,Medium
+"Strangers created a fake Twitter account using my photos and started a smear campaign; some of my employer's contacts received direct messages.",Impersonation,High
+"I clicked a shortened URL from an unknown DM on LinkedIn; my laptop lost network access and a ransom note appeared referencing our internal servers.",Ransomware,High
+"I was called by someone claiming to be from the Income Tax department asking for PAN, bank account and OTP — he threatened legal action if I didn't transfer money immediately.",Vishing,High
+"My personal email account shows login activity from Russia and several password reset emails that I didn’t initiate.",Identity Theft,Medium
+"A fraudster impersonated a known NGO on Instagram and asked followers to donate to a different bank account after a natural disaster in Kerala.",Social Engineering,Medium
+"An attacker posted my private messages to a public subreddit and tagged my workplace, causing HR to contact me about reputation damage.",Cyberbullying,High
+"My PayU payment gateway logs show multiple failed attempts and then one successful payment to a foreign merchant I never authorised.",Financial Fraud,High
+"A phishing email spoofing Razorpay asked me to 'verify merchant details' and requested a CSV upload containing banking credentials.",Phishing,High
+"My Whatsapp business account was cloned; the impostor replied to customers asking for payments to a new account and I saw complaints in support.",Social Media Account Hacked,High
+"I downloaded a 'free tax calculator' from an unfamiliar site; it installed a keylogger and my NetBanking password was used for transfers.",Malware,High
+"A scammer used caller ID spoofing to show they were calling from my bank’s helpline; they convinced me to install remote software and emptied my account.",Vishing,High
+"An unknown person started posting manipulated videos of me on Facebook; they stitched private clips and added false voiceover accusing me of illegal acts.",Blackmailing,High
+"My child received friend requests from strangers on gaming apps and one asked for private photos; the account later threatened to post them.",Child Exploitation,High
+"A targeted phishing email to finance team spoofed our CFO and requested urgent vendor payments to a new account; one payment of ₹3,20,000 went through.",Social Engineering,High
+"I purchased airline tickets on a low-cost site; after payment the confirmation was fake and the card used by the merchant showed as 'merchant compromised' later.",Online Shopping Scam,Medium
+"After clicking a link promising a government scholarship list, I was taken to a fake MyGov page asking for DigiLocker credentials.",Phishing,High
+"My office Slack got spammed with links that automatically redirected to a site scraping employee cookies.",Malware,High
+"A fraudster set up a fake demat account in my name and bought shares using my PAN data before I noticed.",Identity Theft,High
+"I was asked to scan QR code for 'utility bill payment' at a store; the QR initiated a UPI mandate and multiple small debits followed.",Phishing,Medium
+"Someone used my name and company logo to create a LinkedIn premium job posting that asked applicants to pay a processing fee.",Impersonation,Medium
+"My phone number was ported to another SIM after a social-engineering attack at the telco store; I lost access to banking OTPs.",Identity Theft,High
+"A marketplace seller sent an Amazon-like invoice asking to 'confirm refund' via a Google Form that captured my card number.",Phishing,Medium
+"My school’s student database was leaked with emails and parents’ phone numbers after a third-party vendor was hacked.",Data Breach,Medium
+"A Telegram user offered early crypto-investment access and used FOMO tactics; after transfer to a US-based wallet the account vanished.",Cryptocurrency Fraud,High
+"Someone spoofed my boss’s mobile number and sent a WhatsApp message asking me to urgently pay a vendor; I wired money before verifying.",Social Engineering,High
+"My Android phone restarted repeatedly after installing an APK; apps were behaving strangely and banking OTPs were forwarded.",Malware,High
+"A scammer told me a family member had been arrested and asked me to pay bail via Insta-transfer; they had some personal info which made it believable.",Social Engineering,High
+"I discovered a fake recruitment ad using my ex-company’s name; applicants paid an upfront fee and never got jobs.",Job Scam,Medium
+"A browser extension I installed injected a small popup asking to 'unlock premium content' and then stole saved passwords from Chrome.",Malware,High
+"My Gmail contacted list received an email from me with a malicious PDF; I didn't send it and suspect an SMTP credential leak.",Social Media Account Hacked,Medium
+"A caller claimed to be from 'Aadhaar support' and convinced my father to tell biometric authentication steps; I later found fraudulent KYC created with his details.",Identity Theft,High
+"An unknown vendor on Instagram sold designer bags; they asked for UPI payment and then blocked me without shipping.",Online Shopping Scam,Low
+"After a conference, the attendee spreadsheet with emails and phone numbers was uploaded to a public webserver by mistake.",Data Breach,Medium
+"My Netflix account started charging an extra international card; someone added a new payment method and used it for purchases.",Social Media Account Hacked,Medium
+"A fake tech support chat convinced my neighbour to run terminal commands that installed backdoor software; the attacker logged in remotely.",Technical Support Scam,High
+"My company’s CRM was accessed by an overseas IP and customer credit card tokens were exported.",Data Breach,High
+"A malicious YouTube link promised HD films but when opened it ran a script that downloaded malware to my laptop.",Malware,Medium
+"A WhatsApp number posed as our school admin and asked parents to pay for a fake excursion via a link; several parents reported money missing.",Social Engineering,Medium
+"Someone posted a doctored audio clip of me on a local Whatsapp group accusing me of wrongdoing — it's causing local harassment.",Cyberbullying,High
+"A well-crafted spear-phish to a senior lawyer at our firm requested client account details and used domain lookalike email addresses.",Phishing,High
+"My Apple ID shows sign-in attempts from multiple countries and recovery options were changed.",Identity Theft,High
+"A fraudulent fintech app on the iOS store stole my saved cards when I used one-tap checkout.",Financial Fraud,High
+"A user on a dating site created a fake identity using photos of a Bollywood actor and convinced me to invest ₹1,50,000 in a 'film token'.",Social Engineering,High
+"An old social media post of my teenager was screenshotted and circulated in school groups with abusive captions.",Cyberbullying,Medium
+"My startup received an email with a malicious invoice attachment that executed a macro and dropped a trojan.",Malware,High
+"A coach from a training portal requested scanned PAN and cancelled cheque for 'registration' and later used them to open accounts.",Identity Theft,High
+"My debit card number was scraped from a travel booking site and used internationally.",Financial Fraud,High
+"A WhatsApp broadcast offering government job lists linked to a Google Form that asked for Aadhaar and bank details.",Phishing,High
+"After a data breach, a list of my clients' emails was used to seed fake 'invoice' phishing emails that looked highly credible.",Phishing,High
+"A cloned website copied my NGO's donation page and routed funds to a fraudulent bank account.",Online Shopping Scam,High
+"Someone threatened to publish edited footage if I didn't withdraw a defamation complaint; they referenced a private Zoom meeting.",Blackmailing,High
+"A malicious QR code posted at a mall redirected my phone to a fake payment gateway and stole my UPI PIN.",Phishing,High
+"My Instagram influencer account's followers were sold and the new owner began promoting gambling links.",Social Media Account Hacked,Medium
+"A scammer used voice-cloning on a short recorded message of my friend and requested urgent money for medical help.",Social Engineering,High
+"After clicking a link in a recruitment email, my laptop began performing background uploads to a foreign IP.",Malware,High
+"An overseas buyer used chargeback abuse on a marketplace and reported non-delivery after I shipped the item.",Financial Fraud,Medium
+"I received a text from 'TCS HR' asking for Aadhaar and bank details for background verification; it turned out to be fraudulent.",Job Scam,Medium
+"A phishing page mimicked SBI netbanking and captured login details while showing a 2FA prompt that I completed.",Phishing,High
+"My corporate email auto-forward was set up by an attacker who then extracted client attachments.",Data Breach,High
+"A fraudster convinced me to buy gift cards and share codes as payment to avoid an arrest; it was a vishing scam.",Vishing,High
+"An unknown person purchased digital ads impersonating my small business with counterfeit contact details.",Impersonation,Medium
+"I was sent a direct message on Instagram with a link to an 'exclusive short film' that downloaded spyware when opened.",Malware,Medium
+"A scammer on Twitter offered me an investment contract to sign; after I signed a PDF, they used my signature to authorise payments.",Social Engineering,High
+"My family’s photos were posted in a private forum with sexualised comments and threats to distribute widely.",Blackmailing,High
+"A fraudulent loan app used my phone contacts and sent premium SMS messages charging me.",Malware,Medium
+"Someone used passport copies uploaded to a travel agent's site (which later leaked) to create fake IDs.",Identity Theft,High
+"A manipulative phishing voicemail left details purporting to be from 'UK HMRC' and asked for bank transfer to clear a fine.",Vishing,Medium
+"My online store's payment webhook secret was exposed and payments were redirected to a test account.",Data Breach,High
+"A Telegram bot convinced users into sending private KYC images promising early token access, then sold the data.",Cryptocurrency Fraud,High
+"I discovered a fake Google review profile that uses my name to post defamatory ratings causing loss of local customers.",Cyberbullying,Medium
+"A social media campaign used my old photographs to create a smear blog targeting my workplace; the posts include private messages.",Cyberbullying,High
+"A remote worker used a weak password and attacker used it to exfiltrate proprietary code from our repo.",Data Breach,High
+"An auction scam on an international classified site asked for escrow via a third-party wallet and then vanished.",Online Shopping Scam,Medium
+"A recruiter asked for PAN, Aadhaar and scanned cheque promising onboarding; after I paid 'bond processing' I never heard back.",Job Scam,High
+"A login prompt on my Android banking app redirected me to a cloned page that stole my credentials.",Phishing,High
+"A fake WhatsApp number impersonating my school convinced parents to pay a 'voluntary fee' via UPI, then disappeared.",Social Engineering,Medium
+"I got an email from 'LinkedIn support' requesting identity verification via a link that collected my passport scan.",Phishing,Medium
+"An unknown actor used my company domain to send spear-phishing emails to executives asking for supplier payments.",Phishing,High
+"A caller said they had my PAN and threatened to report me unless I paid a 'compliance fine' over the phone.",Vishing,High
+"My online meeting link was intercepted and the recording was uploaded to a porn site with my name in the title.",Blackmailing,High
+"A fake booking confirmation for a hotel included a link that installed malware when clicked on a work laptop.",Malware,High
+"After the courier site 'updated' my delivery, the tracking link asked me to login and captured my banking credentials.",Phishing,Medium
+"A fake charity Whatsapp group asked for UPI payments to a new number; multiple donations went to the same fraudulent account.",Social Engineering,Medium
+"Someone used my identity to register for multiple mobile wallets, which were then used for money laundering.",Identity Theft,High
+"A seemingly legitimate job offer required me to deposit 'security fee' into a foreign bank account controlled by scammers.",Job Scam,High
+"An attacker uploaded a forged affidavit with my name to a local government portal and used it to claim property documents.",Identity Theft,High
+"Cybercriminals scraped our public employee pages and created targeted passwords using birthdates and public info.",Social Engineering,Medium
+"An email from 'paypal@secure.com' asked me to confirm a refund and to upload a selfie with my passport — the link was a credential harvester.",Phishing,High
+"A hacker accessed my DigiLocker account and downloaded my driving license and PAN card without permission.",Identity Theft,High
+"My mother got a call claiming her Aadhaar was blocked and she needed to verify by sharing OTP, later ₹40,000 was debited from her SBI account.",Vishing,High
+"A fake job consultancy in Delhi asked me to pay ₹10,000 as 'training fees' and vanished after receiving the payment.",Job Scam,Medium
+"Received an SMS saying my electricity bill was overdue, with a link to make immediate UPI payment, the page was fake.",Phishing,High
+"My child’s school WhatsApp group was spammed with inappropriate videos from a hacked parent account.",Cyberbullying,High
+"Someone created a Telegram group in my name and started posting offensive memes targeting minorities.",Impersonation,High
+"A QR code pasted on a toll booth redirected me to a phishing site asking for card details.",Phishing,High
+"My Flipkart account was hacked and orders worth ₹25,000 were placed and delivered to another address.",Social Media Account Hacked,High
+"I invested in a fake crypto mining scheme promoted on Instagram; after transferring money, the website stopped responding.",Cryptocurrency Fraud,High
+"A ransomware attack locked all the patient records in our clinic and demanded 2 BTC for decryption.",Ransomware,High
+"My Gmail was hacked and the attacker sent threatening emails to my contacts pretending to be me.",Identity Theft,High
+"I was promised part-time data entry work but was asked to deposit ₹2000 as 'software charge' which was a scam.",Job Scam,Low
+"My cousin’s photo was morphed into obscene images and circulated on Telegram groups.",Cyberbullying,High
+"An unknown caller said my PAN card is linked to a crime and I must pay to 'clear my name'.",Vishing,High
+"A website advertised cheap train tickets but after payment I got no ticket and the site disappeared.",Online Shopping Scam,Medium
+"My Axis Bank account login was stolen after I clicked a link in an SMS claiming 'KYC update required'.",Phishing,High
+"Scammers cloned my Facebook page and started asking my friends for money for 'emergencies'.",Impersonation,Medium
+"An old video call was recorded and used to blackmail me into sending ₹50,000 in Bitcoin.",Blackmailing,High
+"My company’s HR portal was hacked and all employee salary slips were leaked online.",Data Breach,High
+"A malicious Chrome extension I installed started capturing keystrokes and forwarding them.",Malware,High
+"My Twitter account was hacked and began posting fake cryptocurrency promotions.",Social Media Account Hacked,Medium
+"A friend received a fraudulent email pretending to be from IRCTC and entered card details, which were stolen.",Phishing,High
+"I received a call saying my bank account would be frozen unless I provided Aadhaar and OTP.",Vishing,High
+"My Amazon seller account was taken over and fraudulent product listings were added.",Social Media Account Hacked,High
+"Someone spread false rumors about me in a local WhatsApp group causing mental harassment.",Cyberbullying,Medium
+"I lost ₹15,000 after clicking on a Paytm KYC verification link sent via SMS.",Phishing,High
+"A scammer used my stolen identity to apply for a personal loan from a fintech company.",Identity Theft,High
+"My college exam portal was hacked and fake results were posted online.",Data Breach,Medium
+"I bought sneakers from an Instagram seller, paid in advance, but never got the item.",Online Shopping Scam,Low
+"My webcam was hacked and I got an email demanding ransom to not release intimate footage.",Blackmailing,High
+"A fraudulent website pretending to be a COVID-19 vaccination booking portal stole personal data.",Phishing,High
+"Scammers cloned my friend’s WhatsApp account and started messaging me for urgent money transfers.",Social Engineering,Medium
+"My UPI account was used for multiple transactions without my consent after downloading a malicious app.",Financial Fraud,High
+"A girl in my class is being targeted with hateful memes on an anonymous Instagram account.",Cyberbullying,Medium
+"My ICICI credit card details were leaked in a database breach and used internationally.",Data Breach,High
+"Someone threatened to share my private chat screenshots unless I paid them ₹10,000.",Blackmailing,High
+"I clicked a fake link claiming to be from SBI netbanking and lost ₹75,000.",Phishing,High
+"My LinkedIn account was hacked and the attacker messaged recruiters pretending to be me.",Identity Theft,Medium
+"A Telegram scam group posed as an 'investment club' and duped me of ₹1 lakh.",Cryptocurrency Fraud,High
+"Scammers called pretending to be electricity board officers and made me transfer money through UPI.",Vishing,High
+"A malicious PDF attached to a fake invoice email encrypted my files and demanded ransom.",Ransomware,High
+"An imposter created a fake matrimonial profile using my photos and was chatting with strangers.",Impersonation,High
+"My Gmail received a phishing email that mimicked the Income Tax department portal.",Phishing,High
+"My phone was hacked through a malicious APK and contacts were spammed with fraud loan links.",Malware,High
+"A fake Flipkart customer support number on Google asked me to share OTP for 'refund processing'.",Vishing,Medium
+"My company’s confidential client list was leaked on a hacker forum.",Data Breach,High
+"My classmate is receiving threatening messages on Telegram from anonymous accounts.",Cyberbullying,Medium
+"I was blackmailed with edited images that made it look like I was in inappropriate situations.",Blackmailing,High
+"A caller spoofed the number of HDFC Bank and asked me to install AnyDesk app.",Vishing,High
+"An attacker hacked our corporate Outlook account and sent phishing emails to clients.",Phishing,High
+"My Quora account was compromised and spam messages were posted.",Social Media Account Hacked,Low
+"A phishing site looked exactly like IRCTC and stole my login credentials.",Phishing,High
+"My Aadhaar data was used to open a Paytm Payments Bank account without my consent.",Identity Theft,High
+"My Twitter DMs were leaked on a forum after an unauthorized login.",Data Breach,High
+"An OLX buyer sent me a QR code to 'receive money' but instead debited my account.",Phishing,High
+"A cybercafé stored my scanned PAN and misused it to open fraudulent bank accounts.",Identity Theft,High
+"My classmate’s Instagram account was hacked and is now being used for crypto scams.",Social Media Account Hacked,Medium
+"I got a fake GST invoice email with a malware attachment.",Malware,High
+"A ransomware attack froze all my office systems asking for Bitcoin payment.",Ransomware,High
+"My Gmail recovery email was changed by an attacker and I lost access.",Identity Theft,High
+"Someone created a fake donation page during floods in Assam and collected lakhs in UPI payments.",Social Engineering,High
+"My Facebook profile was duplicated and used to message my relatives for money.",Impersonation,Medium
+"A caller said my Provident Fund account was suspended and tricked me into giving OTP.",Vishing,High
+"A phishing SMS claimed to be from EPFO and stole my login details.",Phishing,High
+"My website’s admin panel was hacked and defaced with political slogans.",Data Breach,Medium
+"A Telegram bot pretending to be a government job alert service asked me to pay a registration fee.",Job Scam,Low
+"My bank account was debited ₹90,000 after I installed a fake SBI YONO app.",Malware,High
+"A hacker accessed my Google Drive and leaked private documents online.",Data Breach,High
+"My Steam account was hacked and all my in-game items were stolen.",Social Media Account Hacked,Medium
+"Someone created a fake profile on Shaadi.com with my name and pictures.",Impersonation,High
+"A stranger threatened to post intimate messages I sent unless I paid ₹20,000.",Blackmailing,High
+"My Paytm wallet was emptied after I shared an OTP with a fake customer support number.",Vishing,High
+"A ransomware email threatened to release customer data unless ₹5 lakhs were paid.",Ransomware,High
+"My Netflix account was hacked and sold on Telegram as a 'premium login'.",Social Media Account Hacked,Low
+"An SMS link claiming to be from SBI KYC update redirected to a phishing site.",Phishing,High
+"My DigiLocker account was accessed without authorization and driving license stolen.",Identity Theft,High
+"A WhatsApp message claimed my Jio number would be suspended unless I clicked a link.",Phishing,Low
+"My Gmail account was hacked and recovery options were changed to a Russian number.",Identity Theft,High
+"An extortionist threatened to release deepfake videos of me unless I paid them.",Blackmailing,High
+"My PUBG account was hacked and the attacker demanded money for return.",Social Media Account Hacked,Low
+"A phishing call claiming to be from RBI said my bank account was blacklisted and asked me to verify by sharing details.",Vishing,High
+"My organization’s payroll system was hacked and salary details leaked.",Data Breach,High
+"A fake NGO collected funds through UPI during COVID claiming to supply oxygen cylinders.",Social Engineering,High
+"My Instagram was hacked and is now selling fake sneakers.",Social Media Account Hacked,Medium
+"A malicious app disguised as Aarogya Setu stole SMS OTPs for banking transactions.",Malware,High
+"An unknown person registered a fake company using my PAN card details.",Identity Theft,High
+"My cousin was cyberbullied on Snapchat with edited images being circulated.",Cyberbullying,Medium
+"A phishing email mimicked Flipkart and asked me to verify my credit card.",Phishing,High
+"My YouTube channel with 50k subscribers was hacked and renamed to promote crypto scams.",Social Media Account Hacked,High
+"A caller impersonated an RBI officer and asked me to deposit money for 'account verification'.",Vishing,High
+"Someone posted abusive tweets tagging me and my workplace to damage my reputation.",Cyberbullying,Medium
+"My SBI netbanking account credentials were stolen after I downloaded a fake Excel file.",Malware,High
+"A ransomware attack encrypted my business data and is demanding $2000 in Monero.",Ransomware,High
+"My LinkedIn account was hacked and used to spam recruiters.",Social Media Account Hacked,Medium
+"A fake matrimonial agent demanded ₹5,000 for profile activation and then blocked me.",Job Scam,Low
+"My Gmail received a fake email that looked like an EPFO notification.",Phishing,Medium
+"My child’s gaming account was hacked and abusive messages were sent.",Cyberbullying,Medium
+"Someone used my Aadhaar and PAN to open a fraudulent Demat account.",Identity Theft,High
+"A caller pretending to be from Delhi Police threatened me to pay ₹50,000 over a fabricated FIR.",Vishing,High
+"A viral WhatsApp message claimed a celebrity endorsed a miracle weight-loss pill; people shared personal bank info to order it, but it was fake.",Fake News,Low
+"A trending tweet falsely stated that the government is offering free iPhones to everyone who registers online; users were asked to provide contact info.",Fake News,Low
+"A forwarded Instagram story claimed that a new COVID-19 variant vaccine is mandatory for children under 12, spreading panic and misinformation.",Fake News,Low
+"Someone on an online gaming platform tried to convince my 14-year-old sibling to share private images in exchange for in-game currency.",Child Exploitation,High
+"A stranger contacted my child on TikTok, claiming to be a talent scout and asked for revealing videos.",Child Exploitation,High
+"An unknown person on Discord started sending threatening messages to my child, demanding photos in exchange for not posting their chats publicly.",Child Exploitation,High
+"I applied to a remote data entry role and was asked to pay ₹3000 for an 'equipment setup fee', then the recruiter disappeared.",Job Scam,Medium
+"A recruitment agency on LinkedIn asked for PAN and bank details for 'background verification' but it was a scam.",Job Scam,Medium
+"Received an email offering a high-paying internship, but they requested upfront payment for 'training material', then went silent.",Job Scam,Medium
+"I met someone on a dating app who claimed to be working overseas; they asked me to send money for flight tickets and never returned.",Online Romance Scam,High
+"A person I met online professed love quickly and requested money to cover an 'emergency medical bill'.",Online Romance Scam,High
+"On a social media dating platform, a stranger convinced me to invest in a business opportunity with them, then blocked me after receiving funds.",Online Romance Scam,High
+"I was chatting with someone on a dating site; they claimed to be stranded abroad and asked me to send money for hotel and visa fees.",Online Romance Scam,High
+"Someone I met on a dating website asked for help to transfer inheritance money, promising to repay me, but disappeared after receiving the funds.",Online Romance Scam,High
+"A person on a dating app claimed to be a military officer and requested money to pay customs fees for a package they supposedly sent to me.",Online Romance Scam,High
+"Met a romantic interest online who asked for cryptocurrency transfers to 'secure our future together', then vanished.",Online Romance Scam,High
+"A scammer on a dating platform said they were trapped abroad and needed money for transportation; they blocked me after payment.",Online Romance Scam,High
+"A person on an online dating site promised marriage if I helped pay for a visa; after transferring the money, contact was lost.",Online Romance Scam,High
+"I met someone in a dating app who claimed to be a wealthy businessman and requested cash for legal fees; later realized it was a scam.",Online Romance Scam,High

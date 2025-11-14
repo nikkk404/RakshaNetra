@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block title %}Learn - Crime RD{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    /* Style for the topic list */
+    #topic-list-container {
+        max-height: 600px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 0.375rem;
+    }
+    .list-group-item {
+        cursor: pointer;
+    }
+    .list-group-item.active {
+        background-color: #004aad;
+        border-color: #004aad;
+    }
+    /* Style for the details area */
+    .topic-details h3 {
+        color: #004aad;
+        margin-top: 1.5rem;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #eee;
+    }
+    .topic-details ul {
+        padding-left: 20px;
+    }
+    .topic-details li {
+        margin-bottom: 0.5rem;
+    }
+    /* Style for the helplines table */
+    .helpline-table {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .helpline-table th, .helpline-table td {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+    }
+    .helpline-table th {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock head %}
+
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Learn About Cyber Threats</h1>
+                <h6 class="text-center">Search for or select a topic to learn how to identify, prevent, and report it.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                <div class="p-4 rounded shadow-sm" style="background-color: #f8f9fa;">
+                    <h3 class="mb-3">Find a Topic</h3>
+                    <div class="mb-3">
+                        <input type="text" id="topic-search" class="form-control" placeholder="Search for topics...">
+                    </div>
+                    <div id="topic-list-container">
+                        <div class="list-group" id="topic-list">
+                            {% for topic_name in attack_topics %}
+                                <a class="list-group-item list-group-item-action topic-link" 
+                                   href="#{{ topic_name | replace(' ', '-') | lower }}" 
+                                   data-topic="{{ topic_name | replace(' ', '-') | lower }}">
+                                    {{ topic_name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-12">
+                <div class="p-4 rounded shadow-sm" style="background-color: #fff; border: 1px solid #eee;">
+                    
+                    <div id="topic-welcome">
+                        <h2 class="h3" style="color: #004aad;">Welcome to the Learning Center</h2>
+                        <p class="lead">Please select a topic from the list on the left to display its details.</p>
+                        <p>You can also use the search bar to filter the list by keywords like "Financial", "Scam", or "Social Media".</p>
+                    </div>
+
+                    <div id="topic-details-content">
+                        {% for topic_name, details in attack_topics.items() %}
+                        <div class="topic-details" id="details-{{ topic_name | replace(' ', '-') | lower }}" style="display:none;">
+                            
+                            <h2 class="mb-3">{{ topic_name }}</h2>
+                            
+                            <h3><i class="bi bi-info-circle-fill me-2"></i>What It Is</h3>
+                            {% for p in details.info %}
+                                <p>{{ p }}</p>
+                            {% endfor %}
+                            
+                            <h3><i class="bi bi-shield-fill-check me-2"></i>What To Do If It Happens</h3>
+                            <ul class="list-unstyled">
+                                {% for step in details.post_attack_steps %}
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ step }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            <h3><i class="bi bi-telephone-fill me-2"></i>Helplines & Resources</h3>
+                            {% if details.helplines %}
+                                <table class="table table-bordered helpline-table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Organization</th>
+                                            <th>Contact / Link</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for name, number in details.helplines.items() %}
+                                        <tr>
+                                            <td>{{ name }}</td>
+                                            <td>{{ number }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>No specific helplines listed for this topic.</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    
+    // --- Search Bar Functionality ---
+    $('#topic-search').on('keyup', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        
+        $('#topic-list .topic-link').each(function() {
+            var topicText = $(this).text().toLowerCase();
+            if (topicText.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    // --- Topic List Click Functionality ---
+    $('#topic-list').on('click', '.topic-link', function(e) {
+        e.preventDefault(); // Stop the browser from jumping to the anchor
+        
+        // Get the topic ID from the 'data-topic' attribute
+        var topicId = $(this).data('topic');
+        
+        // 1. Hide the welcome message
+        $('#topic-welcome').hide();
+        
+        // 2. Hide all other topic details
+        $('.topic-details').hide();
+        
+        // 3. Show the specific topic detail we want
+        $('#details-' + topicId).show();
+        
+        // 4. Update the "active" state on the list
+        $('#topic-list .topic-link').removeClass('active');
+        $(this).addClass('active');
+    });
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,905 @@
+/* General Body and Dashboard Layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    color: #4a5568;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #2b6cb0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    display: flex;
+    align-items: center;
+}
+
+/* Style for horizontal rule separator in sidebar nav */
+.sidebar-nav-separator {
+    margin: 15px 0;
+    border-top: 1px solid #e2e8f0;
+    height: 0;
+}
+
+
+.sidebar-nav-link {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px 25px;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
+}
+
+.sidebar-nav-link:hover,
+.sidebar-nav-link.active {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    border-left: 4px solid #2b6cb0;
+    padding-left: 21px;
+}
+
+.sidebar-nav-link i {
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+/* Main Content Styling */
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #f8f9fb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.main-header h1 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 2.2em;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #a0aec0;
+}
+
+.user-profile span {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Dashboard Sections & Cards (for overview.html & analytics.html general containers) */
+.dashboard-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.dashboard-section h2 {
+    color: #2d3748;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+.dashboard-section p.text-muted {
+    font-size: 0.95em;
+    color: #718096;
+}
+
+/* Stat Cards for Dashboard Overview */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background-color: #f7fafc;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    color: #3182ce;
+    font-size: 1.15em;
+}
+
+.stat-card p {
+    font-size: 2.8em;
+    font-weight: bold;
+    color: #2d3748;
+    margin: 10px 0 0;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+.quick-actions .btn {
+    padding: 10px 25px;
+}
+
+
+/* Buttons */
+.btn {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #4299e1;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3182ce;
+}
+
+.btn-secondary {
+    background-color: #a0aec0;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #718096;
+}
+
+.btn-info {
+    background-color: #4fd1c5;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #38b2ac;
+}
+
+.btn-warning {
+    background-color: #f6ad55;
+    color: #333;
+}
+
+.btn-warning:hover {
+    background-color: #ed8936;
+}
+
+.btn-success {
+    background-color: #68d391;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #48bb78;
+}
+
+.btn-danger {
+    background-color: #fc8181;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e53e3e;
+}
+
+.btn-sm {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+/* Form Elements (for manage-cases.html, reports.html) */
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filters input[type="text"],
+.filters select {
+    padding: 10px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 1em;
+    color: #4a5568;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    flex-grow: 1;
+    max-width: 280px;
+}
+
+.filters input[type="text"]:focus,
+.filters select:focus {
+    border-color: #4299e1;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.25);
+}
+
+.filters .btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+}
+
+
+/* Table Styling (for manage-cases.html) */
+.cases-table-container {
+    overflow-x: auto;
+    margin-top: 25px;
+}
+
+.cases-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.cases-table thead th {
+    background-color: #edf2f7;
+    padding: 15px 20px;
+    text-align: left;
+    color: #4a5568;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+/* Rounded corners for table header */
+.cases-table thead th:first-child { border-top-left-radius: 8px; }
+.cases-table thead th:last-child { border-top-right-radius: 8px; }
+
+
+.cases-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.cases-table tbody tr:nth-of-type(even) {
+    background-color: #f7fafc;
+}
+
+.cases-table tbody tr:hover {
+    background-color: #e2f8f7;
+}
+
+.cases-table tbody td {
+    padding: 15px 20px;
+    vertical-align: middle;
+    color: #4a5568;
+    border-bottom: 1px solid #e2e8f0;
+}
+/* Remove bottom border for last row to align with overall table border */
+.cases-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* FIX: Ensure actions column contents (buttons) wrap appropriately
+   This replaces the previous 'white-space: nowrap' on the td itself. */
+.cases-table td:last-child {
+    width: auto; /* Let content dictate width or stretch minimally */
+}
+.cases-table td:last-child .btn {
+    /* Make buttons flexible to wrap but keep minimal size for readability */
+    flex-shrink: 0; /* Prevents button from shrinking too much if space is very constrained */
+    min-width: 70px; /* A minimum size for buttons to be clickable */
+    text-align: center;
+    white-space: nowrap; /* Prevent button text from wrapping (keep text on one line) */
+}
+/* For very small screens or tight tables, stack buttons using flexbox */
+.cases-table td:last-child {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap to next line if space is tight */
+    gap: 5px; /* Small gap between wrapped buttons */
+    justify-content: flex-start; /* Align buttons to the start */
+    align-items: center; /* Center vertically if wrapped */
+}
+
+
+/* Status and Urgency Badges */
+/* Base style for all badges (more visual pill-like) */
+.status-received, .status-in-progress, .status-resolved, .status-closed, .status-rejected, .status-placeholder,
+.urgency-low, .urgency-medium, .urgency-high, .urgency-placeholder {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.78em;
+    font-weight: 600;
+    color: #fff;
+    display: inline-block;
+    min-width: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+/* Default/loading states for placeholder spans in modal before data arrives */
+.status-placeholder, .urgency-placeholder {
+    background-color: #cbd5e0;
+    color: #4a5568;
+}
+/* Adjust min-width for urgency */
+.urgency-low, .urgency-medium, .urgency-high {
+    min-width: 60px;
+}
+
+
+/* Specific colors for Status Badges - Matching updated button/palette colors */
+.status-received {
+    background-color: #4299e1;
+}
+.status-in-progress {
+    background-color: #f6ad55;
+    color: #333;
+}
+.status-resolved {
+    background-color: #68d391;
+}
+.status-closed {
+    background-color: #a0aec0;
+}
+.status-rejected {
+    background-color: #fc8181;
+}
+
+/* Specific colors for Urgency Badges */
+.urgency-low {
+    background-color: #4fd1c5;
+}
+.urgency-medium {
+    background-color: #ed8936;
+}
+.urgency-high {
+    background-color: #e53e3e;
+}
+
+
+/* Custom Modal Styling (Applies to case-details-modal AND final-report-upload-modal) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    padding-top: 60px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Specific styling for the smaller upload modal if needed to differentiate from larger details modal */
+#final-report-upload-modal .modal-content {
+    max-width: 500px;
+    padding: 25px;
+}
+
+
+/* Keyframes for the modal's fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-button {
+    color: #a0aec0;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #4a5568;
+    text-decoration: none;
+}
+
+.modal-content h2 {
+    color: #2d3748;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+/* Smaller H2 for the sub-modal title to differentiate */
+#final-report-upload-modal .modal-content h2 {
+    font-size: 1.5em;
+}
+
+
+.modal-content p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.modal-content p strong {
+    color: #4a5568;
+    min-width: 160px;
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 15px;
+    font-weight: 600;
+}
+
+.modal-actions {
+    margin-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* Form styling within modals for consistency */
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.95em;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid #cbd5e0;
+    border-radius: .25rem;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+    border-color: #4299e1;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(66,153,225,.25);
+}
+
+
+/* Analytics Grid & Charts Layout */
+.analytics-grid-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+.chart-card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    min-height: 350px;
+}
+
+.chart-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2d3748;
+    font-size: 1.4em;
+    text-align: center;
+    width: 100%;
+}
+
+/* Container for canvas to control chart aspect ratio and responsiveness within card */
+.chart-canvas-container {
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 10px;
+}
+
+/* Base height for all charts to enforce consistent appearance */
+.chart-canvas-container canvas {
+    min-height: 250px;
+    max-height: 300px;
+    display: block;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+/* Adjust heights for specifically designated 'large-chart' cards */
+.chart-card.large-chart .chart-canvas-container canvas {
+    min-height: 300px;
+    max-height: 400px;
+}
+
+
+.detailed-exports {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 25px;
+}
+.detailed-exports h4 {
+    color: #2d3748;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+.detailed-exports .btn {
+    margin-right: 15px;
+}
+
+
+
+/* Reports Section (for reports.html) */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.report-item {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.report-item h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #34495e;
+    flex-grow: 1;
+}
+
+.report-item p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.report-item .btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+.upload-report-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.upload-report-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+}
+
+.upload-report-section label {
+    font-weight: bold;
+    color: #555;
+}
+
+.upload-report-section input[type="file"],
+.upload-report-section input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+/* Responsive Design */
+
+@media (max-width: 1200px) {
+    .analytics-grid-charts {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .chart-canvas-container {
+        height: 250px;
+        max-width: none;
+    }
+    .chart-card.large-chart .chart-canvas-container {
+        height: 300px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+        padding: 15px 0;
+    }
+    .sidebar-nav-link {
+        padding: 12px 18px;
+        font-size: 0.95em;
+    }
+    .sidebar-nav-link i {
+        font-size: 1em;
+        margin-right: 8px;
+    }
+    .main-content {
+        padding: 25px;
+    }
+    .main-header h1 {
+        font-size: 1.8em;
+    }
+    .stats-cards {
+        gap: 20px;
+    }
+    .stat-card p {
+        font-size: 2.3em;
+    }
+    .chart-card {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    /* Adjust modal max width on smaller screens */
+    .modal-content {
+        max-width: 700px; /* slightly smaller on mid-sized screens */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        min-height: 100%;
+    }
+    .dashboard-container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .sidebar-header {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .sidebar-nav li {
+        flex: 1 1 auto;
+        justify-content: center;
+        font-size: 0.9em;
+    }
+    .sidebar-nav-separator {
+        display: none;
+    }
+
+    .sidebar-nav-link {
+        padding: 10px 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+    .sidebar-nav-link i {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .main-content {
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters input[type="text"],
+    .filters select {
+        max-width: 100%;
+    }
+
+    .cases-table th,
+    .cases-table td {
+        font-size: 0.8em;
+        padding: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 0.95em;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 18px;
+        margin: 2% auto; /* adjust margin for very small screens */
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Analytics Charts on Mobile */
+    .analytics-grid-charts {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .chart-card {
+        padding: 18px;
+    }
+    .chart-canvas-container canvas {
+        min-height: 200px;
+        max-height: 250px;
+    }
+    .chart-card.large-chart .chart-canvas-container canvas {
+        min-height: 250px;
+        max-height: 300px;
+    }
+
+
+    .report-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .report-item .btn-group {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+/* Additional Media query for even smaller mobile */
+@media (max-width: 480px) {
+    .cases-table th,
+    .cases-table td {
+        padding: 8px; /* Further reduce padding on tiny screens */
+    }
+    .stat-card h3 {
+        font-size: 1em; /* Scale down headings on tiny screens */
+    }
+    .stat-card p {
+        font-size: 2em; /* And the main numbers */
+    }
+
+    .filters {
+        gap: 8px; /* Tighten up filter spacing as well */
+    }
+}

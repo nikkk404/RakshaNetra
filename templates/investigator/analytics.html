@@ -1,0 +1,185 @@
+{% extends 'investigator/investigator_base.html' %}
+{% block investigator_title %}Analytics - Investigator Panel{% endblock %}
+
+{% block custom_styles %}
+<style>
+    /* New styles for the analytics charts */
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Creates a 2-column grid */
+        gap: 30px; /* Space between charts */
+        padding: 20px 0;
+    }
+
+    .chart-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 25px;
+        height: 400px; /* Consistent height for all chart cards */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chart-card h3 {
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    /* This container will hold the canvas and allow it to be responsive */
+    .chart-canvas-container {
+        position: relative;
+        flex-grow: 1; /* Allows the container to fill the card's height */
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 992px) {
+        .analytics-grid {
+            grid-template-columns: 1fr; /* Stack charts in a single column */
+        }
+    }
+</style>
+{% endblock %}
+
+{% block investigator_content %}
+<section id="analytics" class="dashboard-section active">
+    <h2>My Case Analytics</h2>
+    
+    <div class="analytics-grid">
+        <div class="chart-card">
+            <h3>Cases by Category</h3>
+            <div class="chart-canvas-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Cases by Urgency</h3>
+            <div class="chart-canvas-container">
+                <canvas id="urgencyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Cases by Status</h3>
+            <div class="chart-canvas-container">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Cases Over Time</h3>
+            <div class="chart-canvas-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- Data from Flask ---
+    const categoryData = {{ category_data|tojson|safe }};
+    const urgencyData = {{ urgency_data|tojson|safe }};
+    const statusData = {{ status_data|tojson|safe }};
+    const timelineData = {{ timeline_data|tojson|safe }};
+
+    // --- Chart Colors ---
+    const chartColors = [
+        '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', 
+        '#858796', '#5a5c69', '#fd7e14'
+    ];
+
+    // --- Chart Options ---
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false, // Important for fitting charts into styled containers
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    boxWidth: 12,
+                    font: {
+                        size: 11
+                    }
+                }
+            }
+        }
+    };
+
+    // --- Chart Initializations ---
+
+    // 1. Category Pie Chart
+    if (Object.keys(categoryData).length > 0) {
+        new Chart(document.getElementById("categoryChart"), {
+            type: "pie",
+            data: {
+                labels: Object.keys(categoryData),
+                datasets: [{
+                    data: Object.values(categoryData),
+                    backgroundColor: chartColors
+                }]
+            },
+            options: commonOptions
+        });
+    }
+
+    // 2. Urgency Doughnut Chart
+    if (Object.keys(urgencyData).length > 0) {
+        new Chart(document.getElementById("urgencyChart"), {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(urgencyData),
+                datasets: [{
+                    data: Object.values(urgencyData),
+                    backgroundColor: chartColors.slice().reverse() // Use a different color order
+                }]
+            },
+            options: commonOptions
+        });
+    }
+
+    // 3. Status Bar Chart
+    if (Object.keys(statusData).length > 0) {
+        new Chart(document.getElementById("statusChart"), {
+            type: "bar",
+            data: {
+                labels: Object.keys(statusData),
+                datasets: [{
+                    label: "Cases",
+                    data: Object.values(statusData),
+                    backgroundColor: '#1cc88a'
+                }]
+            },
+            options: { ...commonOptions, plugins: { legend: { display: false } } } // No legend for single-dataset bar charts
+        });
+    }
+
+    // 4. Timeline Line Chart
+    if (Object.keys(timelineData).length > 0) {
+        new Chart(document.getElementById("timelineChart"), {
+            type: "line",
+            data: {
+                labels: Object.keys(timelineData),
+                datasets: [{
+                    label: "Cases",
+                    data: Object.values(timelineData),
+                    fill: true,
+                    borderColor: "#4e73df",
+                    backgroundColor: "rgba(78, 115, 223, 0.1)",
+                    tension: 0.2
+                }]
+            },
+            options: { ...commonOptions, plugins: { legend: { display: false } } }
+        });
+    }
+});
+</script>
+{% endblock %}

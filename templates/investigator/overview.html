@@ -1,0 +1,15 @@
+{% extends 'investigator/investigator_base.html' %}
+{% block investigator_title %}Dashboard Overview - Investigator Panel{% endblock %}
+{% block investigator_content %}
+<section id="overview" class="dashboard-section active">
+  <h2>Dashboard Overview</h2>
+  <div class="stats-cards">
+    <div class="stat-card"><h3>Total Assigned Cases</h3><p>{{ total_cases }}</p></div>
+    <div class="stat-card"><h3>Resolved Cases</h3><p>{{ resolved_cases }}</p></div>
+    <div class="stat-card"><h3>Phishing Cases</h3><p>{{ phishing_cases }}</p></div>
+    <div class="stat-card urgency-high-card"><h3>High Urgency</h3><p>{{ high_urgency_cases }}</p></div>
+    <div class="stat-card urgency-medium-card"><h3>Medium Urgency</h3><p>{{ medium_urgency_cases }}</p></div>
+    <div class="stat-card urgency-low-card"><h3>Low Urgency</h3><p>{{ low_urgency_cases }}</p></div>
+  </div>
+</section>
+{% endblock %}
