@@ -87,8 +87,31 @@ def load_hf_models():
 
     # 4) Urgency encoder
     urgency_encoder_path = hf_hub_download(
-        repo_id=HF_MODEL_REPO,_
+        repo_id=HF_MODEL_REPO,
+        filename="urgency_encoder.pkl"
+    )
+    with open(urgency_encoder_path, "rb") as f:
+        urgency_encoder = pickle.load(f)
 
+    # 5) Urgency model
+    urgency_model_path = hf_hub_download(
+        repo_id=HF_MODEL_REPO,
+        filename="urgency_model.safetensors"
+    )
+    urgency_model = BertForSequenceClassification.from_pretrained(
+        "bert-base-uncased",
+        num_labels=len(urgency_encoder.classes_),
+        state_dict=torch.load(urgency_model_path, map_location="cpu")
+    ).to(device)
+    urgency_model.eval()
+
+    print("Loaded all models from HuggingFace successfully.")
+
+load_hf_models()
+# ---------------- END HF LOADER ---------------------------
+
+
+#------------------------------
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
