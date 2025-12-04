@@ -45,47 +45,49 @@ from flask_limiter.util import get_remote_address
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 models_loaded = False
 
-def load_models_if_needed():
-    global models_loaded, tokenizer, category_model, category_encoder, urgency_model, urgency_encoder
 
-    if models_loaded:
-        return
+# ------------- NEW MODEL LOADING FROM HUGGINGFACE -------------
+import torch
+import pickle
+from transformers import BertTokenizer, BertForSequenceClassification
+from huggingface_hub import hf_hub_download
 
-    MODELS_DIR = os.path.join(app.root_path, 'models')
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+HF_MODEL_REPO = "nikk404/cyber-incident-models"  # your repo
 
-    # Load tokenizer
-    tokenizer_path = os.path.join(MODELS_DIR, "bert_tokenizer/")
-    tokenizer = BertTokenizer.from_pretrained(tokenizer_path)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Category model
-    category_encoder_path = os.path.join(MODELS_DIR, "label_encoder.pkl")
+def load_hf_models():
+    global tokenizer, category_model, category_encoder, urgency_model, urgency_encoder
+
+    # 1) Tokenizer
+    tokenizer = BertTokenizer.from_pretrained(
+        HF_MODEL_REPO,
+        subfolder="bert_tokenizer"
+    )
+
+    # 2) Category encoder
+    category_encoder_path = hf_hub_download(
+        repo_id=HF_MODEL_REPO,
+        filename="label_encoder.pkl"
+    )
     with open(category_encoder_path, "rb") as f:
         category_encoder = pickle.load(f)
 
-    category_model_path = os.path.join(MODELS_DIR, "model.safetensors")
-    category_model = BertForSequenceClassification.from_pretrained(
-        "bert-base-uncased", num_labels=len(category_encoder.classes_)
+    # 3) Category model
+    category_model_path = hf_hub_download(
+        repo_id=HF_MODEL_REPO,
+        filename="model.safetensors"
     )
-    category_model.load_state_dict(load_file(category_model_path, device="cpu"))
-    category_model.to(device)
+    category_model = BertForSequenceClassification.from_pretrained(
+        "bert-base-uncased",
+        num_labels=len(category_encoder.classes_),
+        state_dict=torch.load(category_model_path, map_location="cpu")
+    ).to(device)
     category_model.eval()
 
-    # Urgency model
-    urgency_encoder_path = os.path.join(MODELS_DIR, "urgency_encoder.pkl")
-    with open(urgency_encoder_path, "rb") as f:
-        urgency_encoder = pickle.load(f)
-
-    urgency_model_path = os.path.join(MODELS_DIR, "urgency_model.safetensors")
-    urgency_model = BertForSequenceClassification.from_pretrained(
-        "bert-base-uncased", num_labels=len(urgency_encoder.classes_)
-    )
-    urgency_model.load_state_dict(load_file(urgency_model_path, device="cpu"))
-    urgency_model.to(device)
-    urgency_model.eval()
-
-    models_loaded = True
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # 4) Urgency encoder
+    urgency_encoder_path = hf_hub_download(
+        repo_id=HF_MODEL_REPO,_
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -1703,7 +1705,6 @@ def verify_recaptcha(response_key):
 @limiter.limit("5 per minute")     # Prevent brute-force / spam on contact form
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    load_models_if_needed()
     if request.method == 'POST':
 
         # --- Sanitize all text inputs (XSS protection) ---
