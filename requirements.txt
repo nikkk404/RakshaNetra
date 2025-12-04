@@ -1,4 +1,11 @@
-﻿bleach==6.3.0
+﻿--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch==2.2.2+cpu
+transformers==4.57.3
+tokenizers==0.22.1
+safetensors==0.7.0
+
+bleach==6.3.0
 blinker==1.9.0
 brotli==1.2.0
 certifi==2025.11.12
@@ -49,7 +56,6 @@ pytz==2025.2
 PyYAML==6.0.3
 regex==2025.11.3
 requests==2.32.5
-safetensors==0.7.0
 scikit-learn==1.7.2
 scipy==1.16.3
 setuptools==80.9.0
@@ -58,10 +64,7 @@ sympy==1.14.0
 threadpoolctl==3.6.0
 tinycss2==1.5.1
 tinyhtml5==2.0.0
-tokenizers==0.22.1
-torch==2.9.1
 tqdm==4.67.1
-transformers==4.57.3
 typing_extensions==4.15.0
 tzdata==2025.2
 urllib3==2.5.0
@@ -73,4 +76,3 @@ WTForms==3.2.1
 zope.event==6.1
 zope.interface==8.1.1
 zopfli==0.4.0
-
