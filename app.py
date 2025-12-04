@@ -51,7 +51,7 @@ import torch
 import pickle
 from transformers import BertTokenizer, BertForSequenceClassification
 from huggingface_hub import hf_hub_download
-
+from safetensors.torch import load_file
 HF_MODEL_REPO = "nikk404/cyber-incident-models"  # your repo
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -78,10 +78,11 @@ def load_hf_models():
         repo_id=HF_MODEL_REPO,
         filename="model.safetensors"
     )
+    state_dict = load_file(category_model_path)
     category_model = BertForSequenceClassification.from_pretrained(
         "bert-base-uncased",
         num_labels=len(category_encoder.classes_),
-        state_dict=torch.load(category_model_path, map_location="cpu")
+        state_dict=state_dict
     ).to(device)
     category_model.eval()
 
