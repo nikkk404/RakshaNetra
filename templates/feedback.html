@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback - Cyber Crime Reporting Portal{% endblock %}
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Your Feedback Matters!</h1>
+                <p class="text-white text-center">Help us improve the Cyber Crime Reporting Portal.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9 col-12">
+                {% if success %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ success }}
+                    </div>
+                {% endif %}
+                {% if error %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-4" style="color: #004aad;">Share Your Thoughts</h4>
+                        <form method="POST" action="{{ url_for('feedback') }}">
+                            
+                            <div class="mb-3">
+                                <label for="rating" class="form-label fw-bold">1. Overall Rating of the Portal <span class="text-danger">*</span></label>
+                                <select class="form-select" id="rating" name="rating" required>
+                                    <option value="">Select an option</option>
+                                    <option value="5">5 - Excellent</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="1">1 - Poor</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="satisfaction" class="form-label fw-bold">2. How satisfied are you with the incident response process (if applicable)? <span class="text-danger">*</span></label>
+                                <select class="form-select" id="satisfaction" name="satisfaction" required>
+                                    <option value="">Select an option</option>
+                                    <option value="5">5 - Very Satisfied</option>
+                                    <option value="4">4 - Satisfied</option>
+                                    <option value="3">3 - Neutral</option>
+                                    <option value="2">2 - Dissatisfied</option>
+                                    <option value="1">1 - Very Dissatisfied</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="usefulness" class="form-label fw-bold">3. How useful were the Attack Type and Urgency predictions? <span class="text-danger">*</span></label>
+                                <select class="form-select" id="usefulness" name="usefulness" required>
+                                    <option value="">Select an option</option>
+                                    <option value="5">5 - Extremely Useful</option>
+                                    <option value="4">4 - Very Useful</option>
+                                    <option value="3">3 - Moderately Useful</option>
+                                    <option value="2">2 - Slightly Useful</option>
+                                    <option value="1">1 - Not Useful at all</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ease_of_use" class="form-label fw-bold">4. How easy was it to file a report and navigate the portal? <span class="text-danger">*</span></label>
+                                <select class="form-select" id="ease_of_use" name="ease_of_use" required>
+                                    <option value="">Select an option</option>
+                                    <option value="5">5 - Very Easy</option>
+                                    <option value="4">4 - Easy</option>
+                                    <option value="3">3 - Neutral</option>
+                                    <option value="2">2 - Difficult</option>
+                                    <option value="1">1 - Very Difficult</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="suggestions" class="form-label fw-bold">5. Suggestions for Improvement (e.g., features, speed, investigator experience):</label>
+                                <textarea class="form-control" id="suggestions" name="suggestions" rows="4" placeholder="Tell us how we can make it better..."></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="contact_email" class="form-label fw-bold">6. Email (Optional - if you'd like us to follow up):</label>
+                                <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="your.email@example.com">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg custom-btn">Submit Feedback</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'investigator/investigator_base.html' %}
+{% block investigator_title %}Reports - Investigator Panel{% endblock %}
+{% block investigator_content %}
+<section id="reports" class="dashboard-section active">
+  <h2>My Reports</h2>
+  <ul>
+    {% for case in cases %}
+      {% if case.final_report_file %}
+        <li><a href="{{ url_for('static', filename=case.final_report_file) }}" target="_blank">{{ case.report_tracking_id }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

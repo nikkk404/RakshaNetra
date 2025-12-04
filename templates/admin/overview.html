@@ -1,0 +1,49 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Dashboard Overview - Admin Panel{% endblock %}
+
+{% block admin_content %}
+<section id="overview" class="dashboard-section active">
+    <h2>Dashboard Overview</h2>
+    <!-- In templates/admin/overview.html -->
+
+    <div class="stats-cards">
+        <!-- Existing Cards -->
+        <div class="stat-card">
+            <h3>Total Cases</h3>
+            <p>{{ total_cases | default(0) }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Cases</h3>
+            <p>{{ pending_cases | default(0) }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Resolved Cases</h3>
+            <p>{{ resolved_cases | default(0) }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>In Progress</h3>
+            <p>{{ in_progress_cases | default(0) }}</p>
+        </div>
+
+        <!-- START: NEW URGENCY CARDS -->
+        <div class="stat-card urgency-high-card">
+            <h3>High Urgency</h3>
+            <p>{{ high_urgency_cases | default(0) }}</p>
+        </div>
+        <div class="stat-card urgency-medium-card">
+            <h3>Medium Urgency</h3>
+            <p>{{ medium_urgency_cases | default(0) }}</p>
+        </div>
+        <div class="stat-card urgency-low-card">
+            <h3>Low Urgency</h3>
+            <p>{{ low_urgency_cases | default(0) }}</p>
+        </div>
+        <!-- END: NEW URGENCY CARDS -->
+    </div>
+    <!-- <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <button class="btn btn-primary" id="add-new-case-btn"><i class="fas fa-plus"></i> Add New Case</button>
+        <button class="btn btn-secondary" id="view-all-reports-btn"><i class="fas fa-eye"></i> View All Reports</button>
+    </div> -->
+</section>
+{% endblock %}

@@ -1,0 +1,415 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Investigators - Admin Panel{% endblock %}
+
+{% block admin_head_extra %}
+<style>
+/* --- STYLES FOR RATINGS AND TABLE --- */
+.star-rating {
+    color: #f5c518;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.star-rating .fas { margin-right: 2px; }
+.rating-count { font-size: 0.8rem; color: #888; margin-left: 5px; }
+
+/* FIX: Style for clickable pending badge/row */
+.investigator-row:hover { background-color: #f5f5f5; }
+.js-workload-trigger:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+/* Style for modal list */
+#inv-recent-cases .list-group-item {
+    border-left: 5px solid transparent;
+    margin-bottom: 5px;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+
+{% block admin_content %}
+<section id="investigators" class="dashboard-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Investigators</h2>
+        <a href="{{ url_for('add_investigator') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Investigator
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="investigators-table-container">
+        <table class="cases-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Total Assigned</th>
+                    <th>Cases Solved</th>
+                    <th>Cases Pending</th> 
+                    <th>User Rating</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if investigators %}
+                    {% for inv in investigators %}
+                    
+                    <tr class="investigator-row" data-investigator-id="{{ inv._id_str }}"> 
+                        <td>
+                            <button class="btn btn-link investigator-details-btn p-0" data-id="{{ inv._id_str }}">
+                                {{ inv.username }}
+                            </button>
+                        </td>
+                        <td>{{ inv.email }}</td>
+                        <td>{{ inv.total_assigned or 0 }}</td>
+                        <td>{{ inv.total_solved or 0 }}</td>
+                        
+                        {# FIX: Clickable Pending Cases Cell #}
+                        <td class="js-workload-trigger" data-investigator-id="{{ inv._id_str }}">
+                            {% set pending = inv.cases_pending | default(0) %}
+                            <span class="badge bg-{{ 'danger' if pending > 5 else 'warning' if pending > 0 else 'success' }}">
+                                {{ pending }}
+                            </span>
+                        </td>
+                        
+                        <td>
+                            {% if inv.average_rating > 0 %}
+                                <button class="view-feedback-btn" data-id="{{ inv._id_str }}" data-username="{{ inv.username }}">
+                                    <span class="star-rating">
+                                        {{ "%.1f" | format(inv.average_rating) }}
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span class="rating-count">
+                                        ({{ inv.rated_cases_count }} rating{% if inv.rated_cases_count != 1 %}s{% endif %})
+                                    </span>
+                                </button>
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger remove-investigator-btn" data-id="{{ inv._id_str }}">Demote</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="7" class="text-center">No investigators found.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        {# --- MODALS START HERE --- #}
+        
+        {# Investigator Details Modal (Workload, Charts, Recent Cases) #}
+        <div id="investigator-details-modal" class="modal" style="display:none;">
+            <div class="modal-content" style="max-width:900px;">
+                <span class="close-investigator-modal" style="float:right;cursor:pointer">&times;</span>
+                <h3 id="inv-modal-username">Investigator Details</h3>
+                <p><strong>Email:</strong> <span id="inv-modal-email"></span></p>
+                <p><strong>Total Assigned Cases:</strong> <span id="inv-modal-total"></span> — <strong>Solved:</strong> <span id="inv-modal-solved"></span></p>
+
+                <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:250px;">
+                        <h5>Cases by Category</h5>
+                        <canvas id="invCategoryChart" height="200"></canvas>
+                    </div>
+                    <div style="flex:1;min-width:250px;">
+                        <h5>Cases by Urgency</h5>
+                        <canvas id="invUrgencyChart" height="200"></canvas>
+                    </div>
+                    <div style="flex:1;min-width:250px;">
+                        <h5>Cases by Status</h5>
+                        <canvas id="invStatusChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <h5 class="mt-3">Recent Cases & **Pending Workload**</h5>
+                <div id="inv-recent-cases"></div> 
+            </div>
+        </div>
+        
+        {# Investigator Feedback Modal (Ratings and Comments) #}
+        <div id="investigator-feedback-modal" class="modal" style="display:none;">
+            <div class="modal-content" style="max-width:600px;">
+                <span class="close-feedback-modal" style="float:right;cursor:pointer">&times;</span>
+                <h3 id="feedback-modal-username">User Feedback</h3>
+                <p>Showing all user-submitted ratings and comments for this investigator.</p>
+                
+                <div id="feedback-modal-list" class="list-group">
+                    <div class="text-center p-5">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        <p class="mt-2">Loading feedback...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<script>
+// --- START JAVASCRIPT ---
+document.addEventListener('DOMContentLoaded', () => {
+    // =================================================================
+    // === SETUP & HELPERS =============================================
+    // =================================================================
+    const detailsModal = document.getElementById('investigator-details-modal');
+    const closeDetailsBtn = document.querySelector('.close-investigator-modal');
+    const tableContainer = document.querySelector('.investigators-table-container');
+    const charts = {};
+    let modalLoading = false;
+
+    const feedbackModal = document.getElementById('investigator-feedback-modal');
+    const closeFeedbackBtn = document.querySelector('.close-feedback-modal');
+    const feedbackModalUsername = document.getElementById('feedback-modal-username');
+    const feedbackModalList = document.getElementById('feedback-modal-list');
+
+    function showDetailsModal() { detailsModal.style.display = 'block'; }
+    function hideDetailsModal() { 
+        // Destroy charts before hiding is crucial to prevent memory leaks/errors
+        ['invCategoryChart','invUrgencyChart','invStatusChart'].forEach(destroyChart);
+        detailsModal.style.display = 'none'; 
+    }
+    
+    function showFeedbackModal() { feedbackModal.style.display = 'block'; }
+    function hideFeedbackModal() { 
+        feedbackModal.style.display = 'none';
+        feedbackModalList.innerHTML = '<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2">Loading feedback...</p></div>';
+    }
+    
+    function getStarHtml(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="fas fa-star ${i <= rating ? 'comment-stars' : 'text-muted'}"></i>`;
+        }
+        return stars;
+    }
+
+    function resetCanvas(id) {
+        const oldCanvas = document.getElementById(id);
+        if (!oldCanvas) return;
+        const parent = oldCanvas.parentNode;
+        const newCanvas = document.createElement('canvas');
+        newCanvas.id = id;
+        newCanvas.height = 200;
+        parent.replaceChild(newCanvas, oldCanvas);
+    }
+    function destroyChart(id) {
+        if (charts[id]) {
+            charts[id].destroy();
+            delete charts[id];
+        }
+        resetCanvas(id);
+    }
+
+
+    // =================================================================
+    // === CORE LOGIC: FETCHING AND DISPLAYING STATS ====================
+    // =================================================================
+
+    async function handleDetailsFetch(id, username, email) {
+        if (modalLoading) return;
+        modalLoading = true;
+
+        showDetailsModal();
+        document.getElementById('inv-modal-username').textContent = username;
+        document.getElementById('inv-modal-email').textContent = email;
+        document.getElementById('inv-recent-cases').innerHTML = '<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2">Loading data...</p></div>';
+
+
+        try {
+            // Fetch stats data (Workload + Charts)
+            const resp = await fetch(`/api/admin/investigator_stats/${id}`, { cache: 'no-store' });
+            const data = await resp.json();
+            if (data.error) throw new Error(data.error);
+
+            const { category_counts, urgency_counts, status_counts, total_assigned, solved_count, recent_cases } = data;
+
+            document.getElementById('inv-modal-total').textContent = total_assigned;
+            document.getElementById('inv-modal-solved').textContent = solved_count;
+
+            const colors = ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796'];
+            ['invCategoryChart','invUrgencyChart','invStatusChart'].forEach(destroyChart);
+
+            // --- Chart Initialization ---
+            if (category_counts && Object.keys(category_counts).length) {
+                charts.invCategoryChart = new Chart(document.getElementById('invCategoryChart'), {
+                    type: 'pie',
+                    data: { labels: Object.keys(category_counts), datasets: [{ data: Object.values(category_counts), backgroundColor: colors }] },
+                    options: { plugins:{ legend:{ position:'bottom' } } }
+                });
+            }
+            if (urgency_counts && Object.keys(urgency_counts).length) {
+                charts.invUrgencyChart = new Chart(document.getElementById('invUrgencyChart'), {
+                    type: 'doughnut',
+                    data: { labels: Object.keys(urgency_counts), datasets: [{ data: Object.values(urgency_counts), backgroundColor: colors }] },
+                    options: { plugins:{ legend:{ position:'bottom' } } }
+                });
+            }
+            if (status_counts && Object.keys(status_counts).length) {
+                charts.invStatusChart = new Chart(document.getElementById('invStatusChart'), {
+                    type: 'bar',
+                    data: { labels: Object.keys(status_counts), datasets: [{ label:'Cases', data: Object.values(status_counts), backgroundColor: colors }] },
+                    options: { plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true } } }
+                });
+            }
+            // --- End Chart Initialization ---
+
+
+            // Recent Cases List (Workload Display)
+            const list = recent_cases?.length
+                ? recent_cases.map(c => {
+                    const status = c.status || 'N/A';
+                    let statusMessage = '';
+                    let statusClass = '';
+
+                    // 1. Handle Halted Status (Display reason from halt_message)
+                    if (status === 'Halted') {
+                        statusMessage = `<p class="text-danger small mt-1">On Hold (Reason: ${c.halt_message || 'N/A'})</p>`;
+                        statusClass = 'border-danger'; // Red border for Halted
+
+                    // 2. Handle Rejection (Only show if case is still active/unresolved)
+                    } else if (c.admin_rejection_reason && status !== 'Resolved') {
+                        statusMessage = `<p class="text-danger small mt-1">Report Rejected: ${c.admin_rejection_reason || 'N/A'}</p>`;
+                        statusClass = 'border-warning'; // Yellow border for Rejected
+
+                    // 3. Handle Solved/Resolved (Normal status, no special message)
+                    } else if (status === 'Resolved') {
+                        statusClass = 'border-success'; // Green border for Solved
+                    }
+
+                    return `
+                        <li class="list-group-item ${statusClass}">
+                            <strong>${c.report_tracking_id}</strong>
+                            <div><small>Status: ${status} • ${c.predicted_category || ''} • ${c.predicted_urgency || ''}</small></div>
+                            ${statusMessage}
+                        </li>
+                    `;
+                }).join('')
+                : '<p class="text-muted">No recent cases.</p>';
+            document.getElementById('inv-recent-cases').innerHTML = `<ul class="list-group">${list}</ul>`;
+        } catch (err) {
+            console.error(err);
+            document.getElementById('inv-recent-cases').innerHTML = '<p class="text-danger">Failed to load data. Check console for API errors.</p>';
+        } finally {
+            modalLoading = false;
+        }
+    }
+
+
+    // =================================================================
+    // === EVENT LISTENERS (CLICK HANDLERS) ============================
+    // =================================================================
+
+    // --- Close Modal Listeners ---
+    if (closeDetailsBtn) {
+        closeDetailsBtn.addEventListener('click', hideDetailsModal);
+    }
+    if (closeFeedbackBtn) {
+        closeFeedbackBtn.addEventListener('click', hideFeedbackModal);
+    }
+    
+    // --- Main Event Listener for the whole table ---
+    tableContainer.addEventListener('click', async (e) => {
+        const detailsBtn = e.target.closest('.investigator-details-btn');
+        const removeBtn = e.target.closest('.remove-investigator-btn');
+        const feedbackBtn = e.target.closest('.view-feedback-btn'); 
+        // FIX: Target the new Pending Count cell
+        const pendingClickTarget = e.target.closest('.js-workload-trigger');
+
+
+        // --- Handle Demote Button ---
+        if (removeBtn) {
+            const investigatorId = removeBtn.dataset.id;
+            const name = removeBtn.closest('tr').querySelector('td').innerText.trim();
+            if (!confirm(`Demote "${name}"?`)) return;
+            const res = await fetch(`/admin/remove_investigator/${investigatorId}`, { method:'POST' });
+            const json = await res.json();
+            if (json.success) location.reload();
+            else alert(json.error || 'Failed to demote investigator.');
+            return;
+        }
+
+        // --- Handle Details/Stats Button (Username Click) ---
+        if (detailsBtn && !modalLoading) {
+            const row = detailsBtn.closest('tr');
+            const id = detailsBtn.dataset.id;
+            const username = detailsBtn.innerText.trim();
+            const email = row.querySelectorAll('td')[1].innerText.trim();
+            await handleDetailsFetch(id, username, email);
+            return;
+        }
+        
+        // --- FIX: Handle Pending Workload Click (NEW FUNCTIONALITY) ---
+        if (pendingClickTarget) {
+            const row = pendingClickTarget.closest('tr');
+            const id = row.dataset.id || row.dataset.investigatorId;
+            const pendingBadge = pendingClickTarget.querySelector('.badge');
+            const pendingCount = pendingBadge ? parseInt(pendingBadge.textContent.trim()) : 0;
+            const username = row.querySelector('.investigator-details-btn').textContent.trim();
+            const email = row.querySelectorAll('td')[1].innerText.trim();
+            
+            if (pendingCount > 0 && !modalLoading) {
+                await handleDetailsFetch(id, username, email); // Reuse the full details fetch function
+            } else if (pendingCount === 0) {
+                 alert(`${username} currently has no active pending cases.`);
+            }
+            return;
+        }
+        // -------------------------------------------------------------
+        
+        // --- Handle Feedback Button ---
+        if (feedbackBtn && !modalLoading) {
+            const id = feedbackBtn.dataset.id;
+            const username = feedbackBtn.dataset.username;
+            
+            feedbackModalUsername.textContent = `User Feedback for ${username}`;
+            showFeedbackModal();
+            
+            try {
+                // Fetch feedback data
+                const resp = await fetch(`/api/admin/investigator_feedback/${id}`, { cache: 'no-store' });
+                const data = await resp.json();
+                
+                if (data.error) throw new Error(data.error);
+                
+                if (data.length > 0) {
+                    let html = '';
+                    data.forEach(fb => {
+                        html += `
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small class="text-muted">${fb.case_id || 'Case'}</small>
+                                    <small class="text-muted">${fb.date || 'N/A'}</small>
+                                </div>
+                                <div class="my-1">
+                                    <span class="comment-stars">${getStarHtml(fb.rating)}</span>
+                                </div>
+                                <p class="mb-1 comment-text">
+                                    ${fb.comment ? `"${fb.comment}"` : '<em>No comment left.</em>'}
+                                </p>
+                            </li>
+                        `;
+                    });
+                    feedbackModalList.innerHTML = html;
+                } else {
+                    feedbackModalList.innerHTML = '<div class="text-center p-5"><p class="text-muted">No user feedback found for this investigator.</p></div>';
+                }
+            } catch (err) {
+                console.error(err);
+                feedbackModalList.innerHTML = '<div class="alert alert-danger">Failed to load feedback.</div>';
+            }
+        }
+        
+    });
+});
+</script>
+{% endblock %}

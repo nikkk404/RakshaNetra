@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Cyber Crime Reporting Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center d-flex align-items-center justify-content-center">
+  <div class="container">
+    <h1 class="text-white mb-3">RakshaNetra</h1>
+    <p class="lead text-white">Report incidents, track status, and learn how to stay safe online.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg mt-3">Report an Incident</a>
+  </div>
+</section>
+
+<!-- Action Cards -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="fas fa-bullhorn fa-3x text-primary mb-3"></i>
+            <h5 class="card-title">Report a Cyber Crime</h5>
+            <p class="card-text">Submit details about the cyber crime you faced and get a tracking ID.</p>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-primary">Report Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="fas fa-search fa-3x text-primary mb-3"></i>
+            <h5 class="card-title">Track Your Case</h5>
+            <p class="card-text">Check the current status of your reported cases using your report ID.</p>
+            <a href="{{ url_for('retrieve_id') }}" class="btn btn-outline-primary">Track Case</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="fas fa-graduation-cap fa-3x text-primary mb-3"></i>
+            <h5 class="card-title">Learn & Stay Safe</h5>
+            <p class="card-text">Explore resources and videos to understand cyber threats and protect yourself.</p>
+            <a href="{{ url_for('learn') }}" class="btn btn-outline-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Awareness Videos Carousel -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Cyber Awareness Videos</h2>
+    <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/d5K1g4qoHHc" title="Awareness Video" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="carousel-item active">
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/e0vbhvP97dU" title="Awareness Video" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="carousel-item active">
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/wipMlBMXhkk" title="Awareness Video" allowfullscreen></iframe>
+            </div>
+        </div>
+        <!-- Add more video items as needed -->
+      </div>
+
+      <!-- Carousel controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+{% endblock %}

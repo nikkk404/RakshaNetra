@@ -1,0 +1,213 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Analytics - Admin Panel{% endblock %}
+
+{% block admin_head_extra %}
+    {# Chart.js and Datalabels plugin #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    {# Add Leaflet.js for the map #}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        .analytics-grid-charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 15px 0;
+        }
+        .chart-card {
+            background-color: #ffffff; 
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 380px; 
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-card h3 {
+            color: #333; 
+            margin-top: 0; 
+            margin-bottom: 15px;
+            font-size: 1.1em; 
+            text-align: center; 
+            width: 100%;
+        }
+        .chart-canvas-container {
+            position: relative; 
+            flex-grow: 1; 
+            width: 100%;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 200px;
+        }
+        .chart-canvas-container canvas {
+            max-width: 100% !important; 
+            max-height: 100% !important;
+        }
+        .chart-card.large-chart {
+            grid-column: span 2; 
+            min-height: 400px;
+        }
+        #map {
+            width: 100%; 
+            height: 100%; 
+            border-radius: 8px;
+        }
+        @media (max-width: 768px) {
+            .analytics-grid-charts { 
+                grid-template-columns: 1fr; 
+                gap: 15px; 
+            }
+            .chart-card, .chart-card.large-chart {
+                grid-column: span 1; 
+                min-height: 300px;
+            }
+        }
+        .chart-card p.text-muted { 
+            text-align: center; 
+            margin: auto; 
+        }
+    </style>
+{% endblock %}
+
+{% block admin_content %}
+<section id="analytics" class="dashboard-section">
+    <h2>Incident Analytics</h2>
+    <p class="text-muted">Visual representation of incident data for deeper insights.</p>
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% else %}
+        <div class="analytics-grid-charts">
+            <div class="chart-card">
+                <h3>Incidents by Category</h3>
+                <div class="chart-canvas-container"><canvas id="categoryChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Incidents by Urgency</h3>
+                <div class="chart-canvas-container"><canvas id="urgencyChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Incidents by Status</h3>
+                <div class="chart-canvas-container"><canvas id="statusChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Incidents by Gender</h3>
+                <div class="chart-canvas-container"><canvas id="genderChart"></canvas></div>
+            </div>
+            
+            <div class="chart-card large-chart">
+                <h3>Geographic Incident Distribution</h3>
+                <div class="chart-canvas-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="chart-card large-chart">
+                <h3>Monthly Incident Trends</h3>
+                <div class="chart-canvas-container"><canvas id="monthlyTrendChart"></canvas></div>
+            </div>
+            <div class="chart-card large-chart">
+                <h3>Incidents by Age Group</h3>
+                <div class="chart-canvas-container"><canvas id="ageChart"></canvas></div>
+            </div>
+        </div>
+    {% endif %}
+</section>
+{% endblock admin_content %}
+
+{% block admin_script_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Chart === 'undefined') {
+        console.error("Chart.js is not loaded.");
+        return;
+    }
+    Chart.register(ChartDataLabels);
+
+    // --- Data passed from Flask ---
+    const categoryRawData = {{ attack_type_data | tojson }};
+    const urgencyRawData = {{ urgency_breakdown_data | tojson }};
+    const statusRawData = {{ status_breakdown_data | tojson }};
+    const genderRawData = {{ gender_data | tojson }};
+    const monthlyReportsRawData = {{ monthly_reports_data | tojson }};
+    const ageRawData = {{ age_data | tojson }};
+    const cityLocations = JSON.parse('{{ city_locations_json | safe }}');
+
+    // --- Utility functions and Color Palettes (No changes here) ---
+    function prepareChartData(rawData, labelField, countField, defaultLabel = 'N/A') {
+        const labels = [], dataCounts = [];
+        rawData.forEach(item => {
+            let label = item[labelField] === null ? defaultLabel : String(item[labelField]);
+            if (labelField === '_id' && typeof item[labelField] === 'object' && item[labelField] !== null) {
+                if (item[labelField].min !== undefined) {
+                    label = `${item[labelField].min || '0'}-${item[labelField].max ? (item[labelField].max) : '+'}`;
+                } else {
+                    label = item[labelField].default || 'Unknown';
+                }
+            } else {
+                if (label.toLowerCase() === 'none') label = defaultLabel;
+                if (labelField === '_id') label = capitalize(label);
+            }
+            labels.push(label);
+            dataCounts.push(item[countField]);
+        });
+        return { labels, dataCounts };
+    }
+    function capitalize(str) {
+        if (typeof str !== 'string' || str.length === 0) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    const primaryColors = ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6c757d', '#17a2b8', '#6610f2', '#e83e8c', '#fd7e14', '#20c997'];
+    const statusColorMap = {'Received': '#007bff', 'In Progress': '#ffc107', 'Resolved': '#28a745', 'Closed': '#6c757d', 'Rejected': '#dc3545', 'N/A': '#aaaaaa'};
+    const urgencyColorMap = {'Low': '#17a2b8', 'Medium': '#fd7e14', 'High': '#dc3545', 'N/A': '#aaaaaa'};
+    const getColorForStatus = (status) => statusColorMap[status] || primaryColors[0];
+    const getColorForUrgency = (urgency) => urgencyColorMap[urgency] || primaryColors[1];
+    const commonOptions = {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 20 } },
+            datalabels: { color: '#fff', font: { weight: 'bold', size: 10 }, formatter: (value) => value > 0 ? value : '', display: 'auto' }
+        },
+        animation: { duration: 800, easing: 'easeOutQuart' }
+    };
+    // --- End of Utilities ---
+
+    // --- Chart.js Initializations (Category, Urgency, Status, Gender, Monthly, Age) ---
+    // (This code remains the same as your previous version)
+    const categoryChartData = prepareChartData(categoryRawData, '_id', 'count');
+    if (document.getElementById('categoryChart') && categoryChartData.labels.length > 0) { new Chart(document.getElementById('categoryChart'), { type: 'bar', data: { labels: categoryChartData.labels, datasets: [{ label: 'Number of Incidents', data: categoryChartData.dataCounts, backgroundColor: categoryChartData.labels.map((_, i) => primaryColors[i % primaryColors.length]) }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } } }); }
+    const urgencyChartData = prepareChartData(urgencyRawData, '_id', 'count');
+    if (document.getElementById('urgencyChart') && urgencyChartData.labels.length > 0) { new Chart(document.getElementById('urgencyChart'), { type: 'pie', data: { labels: urgencyChartData.labels, datasets: [{ data: urgencyChartData.dataCounts, backgroundColor: urgencyChartData.labels.map(getColorForUrgency), borderColor: '#fff', borderWidth: 2 }] }, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' } } } }); }
+    const statusChartData = prepareChartData(statusRawData, '_id', 'count');
+    if (document.getElementById('statusChart') && statusChartData.labels.length > 0) { new Chart(document.getElementById('statusChart'), { type: 'doughnut', data: { labels: statusChartData.labels, datasets: [{ data: statusChartData.dataCounts, backgroundColor: statusChartData.labels.map(getColorForStatus), borderColor: '#fff', borderWidth: 2 }] }, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' } } } }); }
+    const genderChartData = prepareChartData(genderRawData, '_id', 'count', 'Unknown');
+    if (document.getElementById('genderChart') && genderChartData.labels.length > 0) { new Chart(document.getElementById('genderChart'), { type: 'pie', data: { labels: genderChartData.labels, datasets: [{ data: genderChartData.dataCounts, backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#9966FF'], borderColor: '#fff', borderWidth: 2 }] }, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' } } } }); }
+    const monthlyTrendChartData = prepareChartData(monthlyReportsRawData, '_id', 'count');
+    if (document.getElementById('monthlyTrendChart') && monthlyTrendChartData.labels.length > 0) { new Chart(document.getElementById('monthlyTrendChart'), { type: 'line', data: { labels: monthlyTrendChartData.labels, datasets: [{ label: 'Incidents per Month', data: monthlyTrendChartData.dataCounts, borderColor: '#36a2eb', backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: true, tension: 0.3 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } } }); }
+    const ageChartData = prepareChartData(ageRawData, '_id', 'count', 'Unknown');
+    if (document.getElementById('ageChart') && ageChartData.labels.length > 0) { new Chart(document.getElementById('ageChart'), { type: 'bar', data: { labels: ageChartData.labels, datasets: [{ label: 'Number of Incidents', data: ageChartData.dataCounts, backgroundColor: ageChartData.labels.map((_, i) => primaryColors[(i + 4) % primaryColors.length]) }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } } }); }
+    
+    // --- INITIALIZE LEAFLET MAP (MARKERS ONLY) ---
+    const map = L.map('map').setView([22.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // This part has been changed to remove the state coloring
+    if (cityLocations && cityLocations.length > 0) {
+        cityLocations.forEach(loc => {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>Attack Type: ${loc.attack_type}`);
+        });
+    }
+});
+</script>
+{% endblock admin_script_extra %}

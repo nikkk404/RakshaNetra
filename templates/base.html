@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Cyber Crime Reporting Portal{% endblock %}</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap & Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-papNM3B+1UnHR1Kuxl8aJjCwfjw3jqY0Nh+OlPyz5M+1a9gXb2qUVgl8lD6nfgXqHz+jOEXkxT9BfpHMXNfb4g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  {% block head %}{% endblock %}
+  <style>
+    body { font-family: 'Roboto', sans-serif; }
+    .navbar { background-color: #004aad; }
+    .navbar .nav-link, .navbar-brand { color: #fff !important; font-weight: 500; }
+    .navbar .nav-link.active { text-decoration: underline; }
+    .site-footer { background: #002b5c; padding: 30px 0; color: #ddd; font-size: 14px; }
+    .site-footer a { color: #fff; text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+    .site-footer h6 { color: #fff; font-weight: 600; }
+    .hero-section { background: linear-gradient(to right, #004aad, #0077c8); color: white; }
+    .btn-primary { background-color: #004aad; border: none; }
+    .btn-primary:hover { background-color: #003580; }
+  </style>
+</head>
+
+<body id="top">
+<header class="bg-white border-top border-bottom" style="border-color: #0d6efd !important; border-width: 3px !important;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center py-2">
+   <div class="d-none d-lg-flex align-items-center">
+       <img src="{{ url_for('static', filename='assets/cyberpeace.png') }}" alt="Cyberpeace logo" style="height: 80px;">
+       
+      </div>
+      <div class="text-center mx-auto">
+        <h1 class="h2 fw-bold mb-1" style="color: #333;">SAKEC CyberPeace CoE</h1>
+        <p class="h5 fw-normal mb-0" style="color: #000;">Cyber Crime Reporting Portal</p>
+      </div>
+      <div class="d-none d-lg-flex">
+        <img src="{{ url_for('static', filename='assets/sakec.png') }}" alt="SAKEC Logo" style="height: 80px;">
+      </div>
+    </div>
+  </div>
+</header>
+
+
+ <nav class="navbar navbar-expand-lg">
+  <div class="container">
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-lg-5 me-lg-auto">
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('index') %}active{% endif %}" href="{{ url_for('index') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('contact') %}active{% endif %}" href="{{ url_for('contact') }}">Report</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('retrieve_id') %}active{% endif %}" href="{{ url_for('retrieve_id') }}">Retrieve ID</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('learn') %}active{% endif %}" href="{{ url_for('learn') }}">Learn</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('solved_cases_analytics') %}active{% endif %}" href="{{ url_for('solved_cases_analytics') }}">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('about') %}active{% endif %}" href="{{ url_for('about') }}">About</a></li>
+        
+        <li class="nav-item"><a class="nav-link {% if request.path == url_for('feedback') %}active{% endif %}" href="{{ url_for('feedback') }}">Feedback</a></li>
+        </ul>
+   
+<ul class="navbar-nav ms-auto">
+ {% if current_user.is_authenticated %}
+ <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown">
+ <i class="bi bi-person-fill"></i> {{ current_user.username }} ({{ current_user.role | capitalize }})
+ </a>
+ <ul class="dropdown-menu dropdown-menu-end">
+ {% if current_user.is_admin %}
+ <li><a class="dropdown-item" href="{{ url_for('admin_overview') }}">Admin Dashboard</a></li>
+ <li><hr class="dropdown-divider"></li>
+ {% endif %}
+ {% if current_user.is_investigator %}
+ <li><a class="dropdown-item" href="{{ url_for('investigator_overview') }}">Investigator Dashboard</a></li>
+ <li><hr class="dropdown-divider"></li>
+{% endif %}
+               <li><a class="dropdown-item" href="{{ url_for('my_profile') }}">My Profile</a></li> 
+ <li><a class="dropdown-item" href="{{ url_for('my_reports') }}">My Reports</a></li>
+ <li><a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a></li>
+ </ul>
+ </li>
+ {% else %}
+<li class="nav-item"><a class="nav-link {% if request.path == url_for('login') %}active{% endif %}" href="{{ url_for('login') }}">Login</a></li>
+ <li class="nav-item"><a class="nav-link {% if request.path == url_for('register') %}active{% endif %}" href="{{ url_for('register') }}">Register</a></li>
+ {% endif %}
+ </ul>
+
+
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main>{% block content %}{% endblock %}</main>
+
+
+  <!-- FOOTER -->
+<footer class="bg-dark text-light pt-3 pb-2">
+  <div class="container">
+    <div class="row">
+      <!-- Resources -->
+     <div class="col-md-4 mb-4">
+    <h5 class="text-uppercase mb-3" style="color: #f0f6fc;">Resources</h5>
+    <ul class="list-unstyled">
+        <li><a href="{{ url_for('index') }}" class="text-light text-decoration-none footer-link">Home</a></li>
+        <li><a href="{{ url_for('about') }}" class="text-light text-decoration-none footer-link">About</a></li>
+        <li><a href="{{ url_for('contact') }}" class="text-light text-decoration-none footer-link">Report</a></li>
+        <li><a href="{{ url_for('retrieve_id') }}" class="text-light text-decoration-none footer-link">Retrieve ID</a></li>
+        <li><a href="{{ url_for('learn') }}" class="text-light text-decoration-none footer-link">Learn</a></li>
+        <li><a href="{{ url_for('feedback') }}" class="text-light text-decoration-none footer-link">Feedback</a></li>
+    </ul>
+</div>
+
+      <!-- Contact -->
+      <div class="col-md-4 mb-4">
+        <h5 class="text-uppercase mb-3" style="color: #f0f6fc;">Contact</h5>
+        <p class="mb-1"><i class="fas fa-phone-alt me-2"></i><a href="tel:022-25580854" class="text-light text-decoration-none">022-25580854</a></p>
+        <p class="mb-1"><i class="fas fa-envelope me-2"></i><a href="mailto:info@sakec.ac.in" class="text-light text-decoration-none">info@sakec.ac.in</a></p>
+        <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i><a href="https://maps.google.com" target="_blank" class="text-light text-decoration-none">Mumbai, Maharashtra</a></p>
+      </div>
+
+      <!-- Social Media -->
+      <div class="col-md-4 mb-4">
+        <h5 class="text-uppercase mb-3" style="color: #f0f6fc;">Follow Us</h5>
+        <a href="https://www.instagram.com/" target="_blank" class="text-light fs-5 me-3"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/" target="_blank" class="text-light fs-5 me-3"><i class="fab fa-linkedin"></i></a>
+        <a href="https://twitter.com/" target="_blank" class="text-light fs-5 me-3"><i class="fab fa-twitter"></i></a>
+        <a href="https://facebook.com/" target="_blank" class="text-light fs-5"><i class="fab fa-facebook"></i></a>
+      </div>
+    </div>
+
+    <hr class="border-secondary">
+
+    <p class="text-center mb-0 small">&copy; 2025 Cyber Crime Reporting Portal. All rights reserved.</p>
+  </div>
+</footer>
+
+
+  <!-- FOOTER >
+  <footer class="site-footer mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h6>Resources</h6>
+          <ul class="list-unstyled">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}">Report</a></li>
+            <li><a href="{{ url_for('retrieve_id') }}">Retrieve ID</a></li>
+            <li><a href="{{ url_for('learn') }}">Learn</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6>Contact</h6>
+          <p><a href="tel:022-25580854">022-25580854</a></p>
+          <p><a href="mailto:info@sakec.ac.in">info@sakec.ac.in</a></p>
+          <p><a href="https://maps.google.com" target="_blank">Mumbai, Maharashtra</a></p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6>Follow Us</h6>
+          <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram me-2"></i></a>
+          <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin me-2"></i></a>
+          <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter me-2"></i></a>
+          <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+      <p class="text-center mt-3 mb-0">&copy; 2025 Cyber Crime Reporting Portal. All rights reserved.</p>
+    </div>
+  <!-- JS FILES -->
+
+
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

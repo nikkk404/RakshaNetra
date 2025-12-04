@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Prediction Results - Crime RD{% endblock %}
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Incident Analysis Results</h1>
+                {% if error %}
+                  <p style="color: red;" class="text-center">{{ error }}</p>
+                {% else %}
+                  <p class="text-white text-center">
+                    <strong>Predicted Attack Type:</strong>
+                      <span style="font-size: 1.5em; color: yellow;">
+                           {{ prediction }}
+                       </span>
+                  </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+              {% if not error %}
+                 <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; color:#343a40;">
+                      <h2>Details:</h2>
+                      <div>
+                         {% for item in info %}
+                         <p style="color: black;">{{ item }}</p>
+                         {% endfor %}
+                       </div>
+                     <h2 style="color: black;">Post-Attack Steps:</h2>
+                     <ul style="color: black;">
+                       {% for step in steps %}
+                        <li style="color: black;">{{ step }}</li>
+                         {% endfor %}
+                     </ul>
+                    <h2 style="color: black;">Helplines:</h2>
+                      <ul style="color: black;">
+                          {% for key, value in helplines.items() %}
+                           <li style="color: black;"><strong>{{ key }}:</strong> <a href="{{ value }}" target="_blank" style="color: black;">{{ value }}</a></li>
+                            {% endfor %}
+                        </ul>
+                  </div>
+              {% endif %}
+               <div class="text-center">
+                    <a href="{{ url_for('index') }}" class="btn custom-btn mt-2 mt-lg-3">Analyse another Incident</a>
+                    <a href="{{ url_for('contact') }}" class="btn custom-btn mt-2 mt-lg-3">Report To Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

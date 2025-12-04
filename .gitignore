@@ -1,0 +1,40 @@
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ---- Virtual Environment ----
+venv/
+ENV/
+env/
+
+# ---- Model Weights (too large for GitHub) ----
+models/*.safetensors
+models/*.bin
+models/*.pt
+
+# Keep tokenizer + configs + encoders
+!models/bert_tokenizer/
+!models/*.pkl
+!models/*.json
+!models/*.py
+
+# ---- Environment Variables ----
+.env
+*.env
+
+# ---- OS / Editor Files ----
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ---- Uploaded Evidence / Reports ----
+static/incident_files/
+
+# ---- Logs ----
+*.log
+
+# ---- Flask instance directory ----
+instance/

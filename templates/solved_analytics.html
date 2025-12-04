@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% block title %}Solved Cases Analytics - Cyber Crime Portal{% endblock %}
+
+{% block head %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <style>
+    .analytics-grid .row { display: flex; flex-wrap: wrap; }
+    .analytics-grid .col-lg-6 { display: flex; margin-bottom: 30px; }
+    .chart-wrapper {
+        width: 100%; padding: 25px; border: 1px solid #e3e6f0;
+        border-radius: 0.5rem; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        display: flex; flex-direction: column;
+    }
+    .chart-title {
+        text-align: center; font-size: 1.1rem; font-weight: 600;
+        color: #5a5c69; margin-bottom: 15px;
+    }
+    .chart-container { position: relative; flex-grow: 1; height: 350px; }
+
+    #map {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.5rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mx-auto">
+                <h1 class="text-white text-center">Solved Cases Analytics</h1>
+                <h6 class="text-center">Insights into successfully resolved cybercrime cases.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <h2 class="text-center mb-5">Solved Case Statistics</h2>
+        <div class="analytics-grid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">Solved Cases by Gender</h3>
+                        <div class="chart-container"><canvas id="genderChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">Solved Cases by Age Group</h3>
+                        <div class="chart-container"><canvas id="ageGroupChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">Solved Cases by Attack Type</h3>
+                        <div class="chart-container"><canvas id="attackTypeChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">Geographic Distribution of Cases</h3>
+                        <div class="chart-container">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script id="analyticsData" type="application/json">
+    {
+        "gender_data": {{ gender_data | tojson | safe }},
+        "age_data": {{ age_data | tojson | safe }},
+        "attack_type_data": {{ attack_type_data | tojson | safe }},
+        "city_locations": {{ city_locations_json | safe }}
+    }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- SETUP: Get all data passed from Flask ---
+    const dataElement = document.getElementById('analyticsData');
+    const data = JSON.parse(dataElement.textContent);
+
+    const genderData = data.gender_data;
+    const ageData = data.age_data;
+    const attackTypeData = data.attack_type_data;
+    const cityLocations = data.city_locations;
+    
+    // Helper function for generating colors
+    const generateColors = (numColors) => {
+        const colors = [
+            '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+            '#858796', '#5a5c69', '#f8f9fc', '#dddfeb', '#b3cde3'
+        ];
+        let result = [];
+        for (let i = 0; i < numColors; i++) {
+            result.push(colors[i % colors.length]);
+        }
+        return result;
+    };
+
+    // --- CHART 1: GENDER (DOUGHNUT) ---
+    const genderCtx = document.getElementById('genderChart').getContext('2d');
+    if (Object.keys(genderData).length > 0) {
+        new Chart(genderCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(genderData),
+                datasets: [{
+                    data: Object.values(genderData),
+                    backgroundColor: generateColors(Object.keys(genderData).length),
+                    hoverOffset: 4,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                cutout: '70%'
+            }
+        });
+    }
+
+    // --- CHART 2: AGE GROUP (BAR) ---
+    const ageCtx = document.getElementById('ageGroupChart').getContext('2d');
+    if (Object.keys(ageData).length > 0) {
+        new Chart(ageCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(ageData),
+                datasets: [{
+                    label: 'Number of Cases',
+                    data: Object.values(ageData),
+                    backgroundColor: '#4e73df',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+    }
+
+    // --- CHART 3: ATTACK TYPE (HORIZONTAL BAR) ---
+    const attackCtx = document.getElementById('attackTypeChart').getContext('2d');
+    if (Object.keys(attackTypeData).length > 0) {
+        new Chart(attackCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(attackTypeData),
+                datasets: [{
+                    label: 'Number of Cases',
+                    data: Object.values(attackTypeData),
+                    backgroundColor: '#1cc88a',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+    }
+
+    // --- CHART 4: GEOGRAPHIC MAP (LEAFLET) - MARKERS ONLY ---
+    // 1. Initialize map view centered on India
+    const map = L.map('map').setView([22.5937, 78.9629], 5);
+
+    // 2. Add a base tile layer (the visual map background)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // 3. Add markers for each city location
+    // The logic to load and color states has been completely removed.
+    if (cityLocations && cityLocations.length > 0) {
+        cityLocations.forEach(loc => {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>Attack Type: ${loc.attack_type}`);
+        });
+    }
+});
+</script>
+{% endblock %}
